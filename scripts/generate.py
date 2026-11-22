@@ -279,10 +279,16 @@ def ai_summary(repo, readme):
         body = {"model": model, "temperature": 0.5, "response_format": {"type": "json_object"},
                 "messages": [{"role": "system", "content": "Отвечай только валидным JSON на русском языке."},
                              {"role": "user", "content": prompt}]}
-        for attempt in range(3):
+        for attempt in range(4):
             try:
                 r = requests.post(url, json=body, timeout=120,
                                   headers={"Content-Type": "application/json", "Accept": "application/json", **headers})
+                if r.status_code == 402 and "FREE_LIMIT" in r.text:
+                    m = re.search(r"Retry after (\d+)s", r.text)
+                    wait = int(m.group(1)) if m else 45
+                    log(f"{name} free limit, wait {wait}s")
+                    time.sleep(wait + 2)
+                    continue
                 if r.status_code == 429:
                     wait = int(r.headers.get("Retry-After", "20") or 20)
                     log(f"{name} 429, wait {wait}s")
@@ -362,10 +368,11 @@ def make_audio(text, path):
 
 # ---------------------------------------------------------------- trend
 def weekly_trend(featured_all):
-    items = search(f"created:>{days_ago(7)} stars:>30", per_page=30)
+    items = search(f"created:>{days_ago(7)} stars:>30", per_page=40)
+    items.sort(key=lambda r: r["stargazers_count"] / age_days(r["created_at"]), reverse=True)
     out = []
     for it in items:
-        if it.get("fork"):
+        if it.get("fork") or vet(it):
             continue
         out.append({
             "full_name": it["full_name"], "url": it["html_url"], "description": it.get("description") or "",
@@ -432,7 +439,8 @@ def main():
         log(f"[{i}/{len(chosen)}] {fn}")
         readme, _ = fetch_readme(fn)
         summary = ai_summary(repo, readme)
-        time.sleep(CFG.get("ai_pause_sec", 4))
+        if summary and summary.get("ai") == "pollinations":
+            time.sleep(CFG.get("free_ai_pause_sec", 46))  # бесплатный лимит: 1 ответ / 45 с
         if summary:
             stats["ai"] += 1
         else:

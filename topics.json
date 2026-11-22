@@ -107,6 +107,6 @@
   ],
   "use_free_ai": true,
   "free_model": "openai",
-  "ai_pause_sec": 4,
-  "min_owner_age_days": 120
+  "min_owner_age_days": 120,
+  "free_ai_pause_sec": 46
 }
