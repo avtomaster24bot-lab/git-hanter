@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://avtomaster24bot-lab.github.io/git-hanter/
     steps:
       - uses: actions/checkout@v4
         with:
@@ -78,4 +78,10 @@ jobs:
         with:
           path: _site
       - id: deployment
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+      - name: Повторный деплой (если GitHub дал сбой)
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 30
+      - if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
