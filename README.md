@@ -2,8 +2,8 @@
 
 **Сайт, который каждый день находит интересные проекты на GitHub и объясняет их простыми словами.**
 
-🌐 Сайт: https://avtomaster24bot-lab.github.io/git-hanter/
-📰 RSS: https://avtomaster24bot-lab.github.io/git-hanter/feed.xml
+🌐 Сайт: https://avtomaster24bot-lab.github.io/git-hunter/
+📰 RSS: https://avtomaster24bot-lab.github.io/git-hunter/feed.xml
 
 ## Что умеет
 

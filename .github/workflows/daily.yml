@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: https://avtomaster24bot-lab.github.io/git-hanter/
+      url: https://avtomaster24bot-lab.github.io/git-hunter/
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:

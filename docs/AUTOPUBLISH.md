@@ -99,17 +99,17 @@
 1. Зарегистрируйтесь на https://developers.tiktok.com/ → **Manage apps → Connect an app** (или *Create app*).
 2. Заполните карточку приложения:
    - иконка, название (например, Git Hunter), категория, описание;
-   - **Terms of Service URL**: `https://avtomaster24bot-lab.github.io/git-hanter/terms.html`
-   - **Privacy Policy URL**: `https://avtomaster24bot-lab.github.io/git-hanter/privacy.html`
-   - платформа **Web**, сайт `https://avtomaster24bot-lab.github.io/git-hanter/`.
+   - **Terms of Service URL**: `https://avtomaster24bot-lab.github.io/git-hunter/terms.html`
+   - **Privacy Policy URL**: `https://avtomaster24bot-lab.github.io/git-hunter/privacy.html`
+   - платформа **Web**, сайт `https://avtomaster24bot-lab.github.io/git-hunter/`.
 3. **Add products**: **Login Kit** и **Content Posting API** (включите *Direct Post*).
    Scopes: `user.info.basic`, `video.publish`, `video.upload`.
-4. В Login Kit укажите **Redirect URI**: `https://avtomaster24bot-lab.github.io/git-hanter/tiktok-callback.html`
+4. В Login Kit укажите **Redirect URI**: `https://avtomaster24bot-lab.github.io/git-hunter/tiktok-callback.html`
 5. Сохраните **Client key** и **Client secret**. Для теста можно использовать **Sandbox** (добавьте себя как target user)
    либо отправить приложение на **Submit for review**.
 6. Получите код авторизации. Откройте в браузере (подставьте свой client key):
    ```
-   https://www.tiktok.com/v2/auth/authorize/?client_key=ВАШ_CLIENT_KEY&scope=user.info.basic,video.publish,video.upload&response_type=code&redirect_uri=https%3A%2F%2Favtomaster24bot-lab.github.io%2Fgit-hanter%2Ftiktok-callback.html&state=githunter
+   https://www.tiktok.com/v2/auth/authorize/?client_key=ВАШ_CLIENT_KEY&scope=user.info.basic,video.publish,video.upload&response_type=code&redirect_uri=https%3A%2F%2Favtomaster24bot-lab.github.io%2Fgit-hunter%2Ftiktok-callback.html&state=githunter
    ```
    Войдите в TikTok и разрешите доступ. Страница `tiktok-callback.html` покажет **code**. Его нужно использовать в течение нескольких минут.
 7. Обменяйте code на токены (в терминале):
@@ -118,7 +118,7 @@
      -H "Content-Type: application/x-www-form-urlencoded" \
      -d "client_key=ВАШ_CLIENT_KEY" -d "client_secret=ВАШ_CLIENT_SECRET" \
      -d "code=КОД_ИЗ_ШАГА_6" -d "grant_type=authorization_code" \
-     -d "redirect_uri=https://avtomaster24bot-lab.github.io/git-hanter/tiktok-callback.html"
+     -d "redirect_uri=https://avtomaster24bot-lab.github.io/git-hunter/tiktok-callback.html"
    ```
    Из ответа возьмите `refresh_token`. Он живёт 365 дней, а access token скрипт обновляет сам.
 8. Добавьте секреты `TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET`, `TIKTOK_REFRESH_TOKEN`.

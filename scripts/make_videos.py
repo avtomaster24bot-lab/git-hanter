@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CFG = json.loads((ROOT / "topics.json").read_text(encoding="utf-8"))
 SITE = CFG["site_url"].rstrip("/") + "/"
 SITE_SHORT = SITE.replace("https://", "").rstrip("/")
-REPO = os.environ.get("GITHUB_REPOSITORY", "avtomaster24bot-lab/git-hanter")
+REPO = os.environ.get("GITHUB_REPOSITORY", "avtomaster24bot-lab/git-hunter")
 FONTS = ROOT / "assets" / "fonts"
 VOICE = CFG.get("voice", "ru-RU-SvetlanaNeural")
 W, H = 1080, 1920            # итоговое видео

@@ -29,7 +29,7 @@ TODAY = os.environ.get("DIGEST_DATE") or dt.datetime.now(TZ).date().isoformat()
 FORCE = os.environ.get("FORCE") == "1"
 
 S = requests.Session()
-S.headers.update({"Accept": "application/vnd.github+json", "User-Agent": "git-hanter",
+S.headers.update({"Accept": "application/vnd.github+json", "User-Agent": "git-hunter",
                   "X-GitHub-Api-Version": "2022-11-28"})
 if TOKEN:
     S.headers["Authorization"] = f"Bearer {TOKEN}"
@@ -403,7 +403,7 @@ def build_feed(index, projects):
         pub = dt.datetime.fromisoformat(d["date"]).replace(hour=8, tzinfo=TZ)
         items.append(
             f"<item><title>Git Hunter — подборка за {d['date']}</title><link>{site}#/day/{d['date']}</link>"
-            f"<guid isPermaLink=\"false\">git-hanter-{d['date']}</guid>"
+            f"<guid isPermaLink=\"false\">git-hunter-{d['date']}</guid>"
             f"<pubDate>{pub.strftime('%a, %d %b %Y %H:%M:%S %z')}</pubDate>"
             f"<description><![CDATA[{desc}]]></description></item>")
     xml = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\"><channel>"
