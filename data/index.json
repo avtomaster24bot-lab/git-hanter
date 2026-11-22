@@ -7,17 +7,17 @@
     "Gathin23/cleanyourtv",
     "erkamyaman/rust-anything",
     "ccch1mneyyy/dsh-Go",
-    "bookwjitchieni1986/blender-ai-mcp-addon",
     "EL4CTEO/fast-anything",
-    "Minireel/HGhub",
     "iamajmeena/neonclipping",
+    "wangzan101/Mika",
     "RoutineMiku/apkstart",
-    "lukecodecode99n4/kingdom-come-deliverance-2-cryengine-console-bridge-carr"
+    "ersinkoc/phonebox",
+    "FrigadeHQ/yogurt"
    ]
   }
  ],
  "total": 9,
- "updated": "2026-11-22T18:31+05:00",
+ "updated": "2026-11-22T18:43+05:00",
  "categories": [
   {
    "id": "ai",
@@ -76,8 +76,8 @@
   }
  ],
  "last_stats": {
-  "ai": 0,
-  "fallback": 9,
+  "ai": 9,
+  "fallback": 0,
   "audio": 9
  }
 }
