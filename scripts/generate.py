@@ -488,10 +488,10 @@ def main():
             item["summary"] = summary
             stats["ai"] += 1
             stats["fallback"] -= 1
-            engine = make_audio(f"{repo['name']}. {summary['narration']}", ROOT / f"audio/{TODAY}-" +
-                                re.sub(r"[^a-z0-9]+", "-", item["full_name"].lower()).strip("-") + ".mp3")
+            rel = f"audio/{TODAY}-" + re.sub(r"[^a-z0-9]+", "-", item["full_name"].lower()).strip("-") + ".mp3"
+            engine = make_audio(f"{repo['name']}. {summary['narration']}", ROOT / rel)
             if engine:
-                item["audio_engine"] = engine
+                item["audio_engine"], item["audio"] = engine, rel
 
     if not day:
         log("Не найдено ни одного проекта")
