@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CFG = json.loads((ROOT / "topics.json").read_text(encoding="utf-8"))
 SITE = CFG["site_url"].rstrip("/") + "/"
 SITE_SHORT = SITE.replace("https://", "").rstrip("/")
+SERVICES_LINE = "🤖 Закажите личного ИИ-ассистента или сайт: https://avtomaster24bot-lab.github.io/git-hunter-studio/"
 REPO = os.environ.get("GITHUB_REPOSITORY", "avtomaster24bot-lab/git-hunter")
 FONTS = ROOT / "assets" / "fonts"
 VOICE = CFG.get("voice", "ru-RU-SvetlanaNeural")
@@ -431,12 +432,14 @@ def make_post(p, video_url=""):
                + f"Как начать: {s.get('how_to_start', '')}\n\n"
                f"🔗 Проект на GitHub: {p['url']}\n"
                f"🔎 Ежедневная подборка Git Hunter: {SITE}#/p/{p['full_name']}\n\n"
-               f"⭐ {p['stars']} · {p.get('language') or ''}\n\n" + " ".join(tags + ["#shorts"]))[:4900]
+               f"⭐ {p['stars']} · {p.get('language') or ''}\n\n"
+               f"{SERVICES_LINE}\n\n" + " ".join(tags + ["#shorts"]))[:4900]
     caption = (f"🔥 {p['name']} — {s.get('tagline', '')}\n\n"
                f"{s.get('what', '')}\n\n"
                f"Зачем: {s.get('why', '')}\n\n"
                f"🔗 github.com/{p['full_name']}\n"
-               f"Больше проектов каждый день — ссылка в профиле 👉 Git Hunter\n\n" + " ".join(tags))
+               f"Больше проектов каждый день — ссылка в профиле 👉 Git Hunter\n"
+               f"{SERVICES_LINE}\n\n" + " ".join(tags))
     if len(caption) > 2150:  # лимит Instagram 2200, TikTok 2200
         caption = caption[:2000].rsplit(" ", 1)[0] + "…\n\n" + " ".join(tags)
     return {"youtube_title": yt_title[:100], "youtube_description": yt_desc, "caption": caption,

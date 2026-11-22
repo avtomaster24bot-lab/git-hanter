@@ -81,3 +81,5 @@ code{background:#0b1220;border:1px solid var(--line);border-radius:6px;padding:1
 .vbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.vbtns .btn{padding:8px 12px;font-size:14px}
 .vnote{color:var(--mut);font-size:12px;text-align:center}
 details.video summary{color:#f0abfc}
+.studio-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:26px;padding:14px 16px;border:1px dashed var(--line);border-radius:var(--r);color:var(--mut);font-size:15px}
+.studio-banner .btn{padding:8px 14px;font-size:14px}

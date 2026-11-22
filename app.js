@@ -130,7 +130,7 @@
     V.innerHTML = `<div class="sec-head"><div><h2>${date ? "Подборка" : "Подборка дня"} · ${esc(ruDate(d))}</h2>
       <p>${list.length} ${plural(list.length, "проект", "проекта", "проектов")} · свежие и быстрорастущие репозитории</p></div>
       <div class="actions">${withAudio ? `<button class="btn" data-playall="1">▶ Слушать всю подборку</button>` : ""}
-      ${prev ? `<a class="btn ghost" href="#/day/${prev.date}">← ${prev.date}</a>` : ""}${next ? `<a class="btn ghost" href="#/day/${next.date}">${next.date} →</a>` : ""}</div></div>` + grid(list, true);
+      ${prev ? `<a class="btn ghost" href="#/day/${prev.date}">← ${prev.date}</a>` : ""}${next ? `<a class="btn ghost" href="#/day/${next.date}">${next.date} →</a>` : ""}</div></div>` + grid(list, true) + studioBanner();
   }
 
   function viewArchive() {
@@ -212,16 +212,71 @@
     }
   }
 
+  /* ---------- Услуги Git Hunter Studio (данные и медиа — с сайта Studio) ---------- */
+  const STUDIO = "https://avtomaster24bot-lab.github.io/git-hunter-studio/";
+  const CONSULT = "https://t.me/Git_Hunter_bot?start=consult";
+  let studioCards = null;
+  function studioBanner() {
+    return `<div class="studio-banner"><span>🤖 Хотите такого же ИИ-помощника для своего бизнеса?</span>
+      <a class="btn" href="#/services">Заказать ИИ-ассистента или сайт</a></div>`;
+  }
+  function studioCard(c) {
+    const abs = (u) => (u && !/^https?:/.test(u) ? STUDIO + u : u);
+    const sec = (t, x) => (x ? `<div class="s"><b>${t}</b><p>${esc(x)}</p></div>` : "");
+    const tail = c.price ? sec("Цена", c.price) : sec("Дальше", c.next);
+    const vid = c.video ? `<div class="vwrap"><video class="vplayer" controls playsinline preload="none" poster="${esc(abs(c.poster))}" src="${esc(abs(c.video))}"></video>
+      <div class="vbtns"><a class="btn" href="${esc(c.video_release_url || abs(c.video))}" download>⬇ Скачать видео</a>
+      <button class="btn ghost" data-scopy="youtube" data-sid="${esc(c.id)}">📋 Текст для YouTube</button>
+      <button class="btn ghost" data-scopy="instagram" data-sid="${esc(c.id)}">📋 Для Instagram</button>
+      <button class="btn ghost" data-scopy="tiktok" data-sid="${esc(c.id)}">📋 Для TikTok</button></div>
+      <small class="vnote">Вертикальное видео 1080×1920${c.video_duration ? ` · ${Math.round(c.video_duration)} с` : ""}</small></div>` : "";
+    return `<article class="card">
+      <a class="img" href="${STUDIO}#b${c.num}" target="_blank" rel="noopener"><img loading="lazy" src="${esc(abs(c.image))}" alt="${esc(c.title)}">
+        <span class="badge">${esc(c.emoji)} ${esc(c.badge)}</span><span class="rank">#${c.num}</span></a>
+      <div class="body">
+        <div class="title"><div><h3>${esc(c.title)}</h3><small>Git Hunter Studio</small></div></div>
+        <p class="tag">${esc(c.tagline)}</p>
+        <audio controls preload="none" src="${esc(abs(c.audio))}" style="width:100%"></audio>
+        ${sec("Что это", c.what)}${sec("Зачем вам", c.why)}
+        <div class="s"><b>Что умеет</b><ul>${(c.features || []).map((f) => `<li>${esc(f)}</li>`).join("")}</ul></div>
+        ${sec("Для кого", c.who)}${tail}
+        ${vid}
+        <details class="more"><summary>Текст аудио</summary><p>${esc(c.text)}</p></details>
+        <div class="actions"><a class="btn" href="${CONSULT}" target="_blank" rel="noopener">💬 Бесплатная консультация</a>
+          <a class="btn ghost" href="${STUDIO}#b${c.num}" target="_blank" rel="noopener">Сайт Studio ↗</a></div>
+      </div></article>`;
+  }
+  async function viewServices() {
+    renderChips([]);
+    V.innerHTML = `<div class="loading">Загружаю услуги…</div>`;
+    try {
+      if (!studioCards) studioCards = await getJSON(STUDIO + "data/cards.json");
+      V.innerHTML = `<div class="sec-head"><div><h2>🤖 Услуги Git Hunter Studio</h2><p>Внедряем лучшие ИИ-инструменты для вашего бизнеса: личный ИИ-ассистент, сайты с ИИ-консультантом, боты и контент-завод.</p></div>
+        <div class="actions"><a class="btn" href="${CONSULT}" target="_blank" rel="noopener">💬 Бесплатная консультация</a><a class="btn ghost" href="${STUDIO}" target="_blank" rel="noopener">Сайт Studio ↗</a></div></div>
+        <div class="grid">${studioCards.map(studioCard).join("")}</div>`;
+    } catch (e) {
+      V.innerHTML = `<div class="empty">Не удалось загрузить услуги. <a href="${STUDIO}" target="_blank" rel="noopener">Открыть сайт Git Hunter Studio</a></div>`;
+    }
+  }
+  document.addEventListener("click", async (e) => {
+    const t = e.target.closest("[data-scopy]"); if (!t || !studioCards) return;
+    const c = studioCards.find((x) => x.id === t.dataset.sid); if (!c) return;
+    const p = c.post || {}, k = t.dataset.scopy;
+    await copyText(k === "youtube" ? `${p.youtube_title}\n\n${p.youtube_description}` : p[k] || "");
+    toast("Текст скопирован");
+  });
+
   function route() {
     const h = decodeURIComponent(location.hash.replace(/^#\/?/, ""));
     const [a, ...rest] = h.split("/");
     state.view = a || "today";
-    setNav({ "": "today", trend: "trend", archive: "archive", fav: "fav" }[a || ""] || "");
+    setNav({ "": "today", trend: "trend", archive: "archive", fav: "fav", services: "services" }[a || ""] || "");
     if (!a) viewDay();
     else if (a === "day") viewDay(rest[0]);
     else if (a === "archive") viewArchive();
     else if (a === "trend") viewTrend();
     else if (a === "fav") viewFav();
+    else if (a === "services") viewServices();
     else if (a === "p") viewProject(rest.join("/"));
     else if (a === "search") {
       const mode = rest[0], q = rest.slice(1).join("/");

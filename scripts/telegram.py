@@ -43,7 +43,8 @@ e = html.escape
 def send(CHAT):
     call("sendMessage", data={"chat_id": CHAT, "parse_mode": "HTML", "disable_web_page_preview": "true",
                               "text": f"🔎 <b>Git Hunter — подборка за {date}</b>\n{len(day['projects'])} интересных проектов GitHub.\n"
-                                      f"Сайт с архивом и поиском: {SITE}#/day/{date}"})
+                                      f"Сайт с архивом и поиском: {SITE}#/day/{date}\n"
+                                      f"🤖 Закажите личного ИИ-ассистента или сайт: https://avtomaster24bot-lab.github.io/git-hunter-studio/"})
     for p in day["projects"]:
         s = p["summary"]
         feats = "\n".join(f"• {e(str(f))}" for f in (s.get("features") or [])[:4])
