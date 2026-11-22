@@ -476,6 +476,23 @@ def main():
             "summary": summary,
         })
 
+    # второй шанс для карточек, где ИИ не ответил
+    for item in day:
+        if not item["summary"].get("fallback"):
+            continue
+        repo = next(r for r in chosen if r["full_name"] == item["full_name"])
+        log(f"повтор ИИ для {item['full_name']}")
+        time.sleep(CFG.get("free_ai_pause_sec", 46))
+        summary = ai_summary(repo, fetch_readme(item["full_name"])[0])
+        if summary:
+            item["summary"] = summary
+            stats["ai"] += 1
+            stats["fallback"] -= 1
+            engine = make_audio(f"{repo['name']}. {summary['narration']}", ROOT / f"audio/{TODAY}-" +
+                                re.sub(r"[^a-z0-9]+", "-", item["full_name"].lower()).strip("-") + ".mp3")
+            if engine:
+                item["audio_engine"] = engine
+
     if not day:
         log("Не найдено ни одного проекта")
         sys.exit(1)
