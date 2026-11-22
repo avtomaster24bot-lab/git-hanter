@@ -27,7 +27,7 @@ day = json.loads((ROOT / f"data/{date}.json").read_text(encoding="utf-8"))
 
 def call(method, **kw):
     for _ in range(3):
-        r = requests.post(f"{API}/{method}", timeout=60, **kw)
+        r = requests.post(f"{API}/{method}", timeout=180, **kw)
         if r.status_code == 429:
             time.sleep(r.json().get("parameters", {}).get("retry_after", 5) + 1)
             continue
@@ -54,13 +54,27 @@ def send(CHAT):
         if len(cap) > 1024:
             cap = (f"{e(p.get('category_emoji',''))} <b>{e(p['full_name'])}</b>  ⭐{p['stars']}\n<i>{e(s.get('tagline',''))}</i>\n\n"
                    f"{e(s.get('what',''))[:600]}\n\n<a href=\"{p['url']}\">GitHub</a> · <a href=\"{SITE}#/p/{p['full_name']}\">Подробнее</a>")[:1024]
-        r = call("sendPhoto", data={"chat_id": CHAT, "photo": p["image"], "caption": cap, "parse_mode": "HTML"})
-        if r is None or not r.ok:
-            call("sendMessage", data={"chat_id": CHAT, "text": cap, "parse_mode": "HTML"})
-        if p.get("audio") and (ROOT / p["audio"]).exists():
-            with open(ROOT / p["audio"], "rb") as f:
-                call("sendAudio", data={"chat_id": CHAT, "title": p["name"], "performer": "Git Hunter"},
-                     files={"audio": (Path(p["audio"]).name, f, "audio/mpeg")})
+        sent = False
+        vpath = ROOT / p["video"] if p.get("video") else None
+        if vpath and vpath.exists():  # видео предпочтительнее: картинка + голос + текст в одном сообщении
+            with open(vpath, "rb") as f:
+                r = call("sendVideo", data={"chat_id": CHAT, "caption": cap, "parse_mode": "HTML",
+                                            "supports_streaming": "true", "width": 1080, "height": 1920,
+                                            "duration": int(p.get("video_duration") or 0)},
+                         files={"video": (vpath.name, f, "video/mp4")})
+            sent = r is not None and r.ok
+        elif p.get("video_release_url"):
+            r = call("sendVideo", data={"chat_id": CHAT, "video": p["video_release_url"], "caption": cap,
+                                        "parse_mode": "HTML", "supports_streaming": "true"})
+            sent = r is not None and r.ok
+        if not sent:
+            r = call("sendPhoto", data={"chat_id": CHAT, "photo": p["image"], "caption": cap, "parse_mode": "HTML"})
+            if r is None or not r.ok:
+                call("sendMessage", data={"chat_id": CHAT, "text": cap, "parse_mode": "HTML"})
+            if p.get("audio") and (ROOT / p["audio"]).exists():
+                with open(ROOT / p["audio"], "rb") as f:
+                    call("sendAudio", data={"chat_id": CHAT, "title": p["name"], "performer": "Git Hunter"},
+                         files={"audio": (Path(p["audio"]).name, f, "audio/mpeg")})
         time.sleep(1.5)
 
 

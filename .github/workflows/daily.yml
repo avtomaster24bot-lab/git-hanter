@@ -9,6 +9,18 @@ on:
         description: "Пересобрать подборку за сегодня"
         type: boolean
         default: false
+      force_video:
+        description: "Пересобрать видео"
+        type: boolean
+        default: false
+      skip_telegram:
+        description: "Не отправлять в Telegram"
+        type: boolean
+        default: false
+      publish_social:
+        description: "Опубликовать в YouTube / Instagram / TikTok (если настроены)"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths-ignore: ["data/**", "audio/**", "feed.xml"]
@@ -19,23 +31,26 @@ permissions:
   id-token: write
 
 concurrency:
-  group: git-hanter
+  group: git-hunter
   cancel-in-progress: false
 
 jobs:
   digest:
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     env:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: pip
+      - name: Установить ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null
       - run: pip install -r requirements.txt
       - name: Собрать подборку
         env:
@@ -45,9 +60,13 @@ jobs:
           LLM_MODEL: ${{ secrets.LLM_MODEL }}
           FORCE: ${{ inputs.force && '1' || '0' }}
         run: python scripts/generate.py
+      - name: Собрать видео (Shorts / Reels / TikTok)
+        env:
+          VIDEO_FORCE: ${{ (inputs.force || inputs.force_video) && '1' || '0' }}
+        run: python scripts/make_videos.py
       - name: Сохранить в репозиторий
         run: |
-          git config user.name "git-hanter-bot"
+          git config user.name "git-hunter-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data audio feed.xml
           if git diff --cached --quiet; then echo "Нет изменений"; else
@@ -55,7 +74,7 @@ jobs:
             git pull --rebase origin main && git push
           fi
       - name: Отправить в Telegram
-        if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHAT_ID != '' }}
+        if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHAT_ID != '' && !inputs.skip_telegram }}
         run: python scripts/telegram.py
 
   deploy:
@@ -65,14 +84,22 @@ jobs:
     environment:
       name: github-pages
       url: https://avtomaster24bot-lab.github.io/git-hanter/
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
       - name: Собрать сайт
         run: |
-          mkdir _site
-          cp -r index.html app.js style.css assets data audio feed.xml .nojekyll _site/ 2>/dev/null || true
+          mkdir -p _site/video
+          cp -r index.html app.js style.css privacy.html terms.html tiktok-callback.html assets data audio feed.xml .nojekyll _site/ 2>/dev/null || true
+          rm -rf _site/assets/fonts
+          # видео последних 7 дней кладём на сайт (более старые — по ссылке на GitHub Release)
+          for d in $(python3 -c "import json;print(' '.join(x['date'] for x in json.load(open('data/index.json'))['days'][:7]))"); do
+            gh release download "digest-$d" -p "*.mp4" -p "*.jpg" -D _site/video --skip-existing 2>/dev/null || echo "нет видео за $d"
+          done
+          du -sh _site _site/video
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -85,3 +112,49 @@ jobs:
         run: sleep 30
       - if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
+
+  publish:
+    needs: deploy
+    if: always() && needs.deploy.result == 'success' && (github.event_name == 'schedule' || inputs.publish_social)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+      YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+      YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+      YOUTUBE_PRIVACY: ${{ vars.YOUTUBE_PRIVACY }}
+      INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+      INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+      INSTAGRAM_LOGIN_API: ${{ vars.INSTAGRAM_LOGIN_API }}
+      TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+      TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+      TIKTOK_REFRESH_TOKEN: ${{ secrets.TIKTOK_REFRESH_TOKEN }}
+      TIKTOK_PRIVACY: ${{ vars.TIKTOK_PRIVACY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: YouTube Shorts
+        if: ${{ env.YOUTUBE_CLIENT_ID != '' && env.YOUTUBE_CLIENT_SECRET != '' && env.YOUTUBE_REFRESH_TOKEN != '' }}
+        continue-on-error: true
+        run: python scripts/publish_social.py youtube
+      - name: Instagram Reels
+        if: ${{ env.INSTAGRAM_ACCESS_TOKEN != '' && env.INSTAGRAM_USER_ID != '' }}
+        continue-on-error: true
+        run: python scripts/publish_social.py instagram
+      - name: TikTok
+        if: ${{ env.TIKTOK_CLIENT_KEY != '' && env.TIKTOK_CLIENT_SECRET != '' && env.TIKTOK_REFRESH_TOKEN != '' }}
+        continue-on-error: true
+        run: python scripts/publish_social.py tiktok
+      - name: Сохранить журнал публикаций
+        run: |
+          git config user.name "git-hunter-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -f data/published.json ]; then
+            git add data/published.json
+            git diff --cached --quiet || { git commit -m "Журнал автопубликации"; git pull --rebase origin main && git push; }
+          fi

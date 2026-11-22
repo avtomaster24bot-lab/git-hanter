@@ -108,5 +108,13 @@
   "use_free_ai": true,
   "free_model": "openai",
   "min_owner_age_days": 120,
-  "free_ai_pause_sec": 46
+  "free_ai_pause_sec": 46,
+  "autopublish": {
+    "youtube_max_per_day": 5,
+    "youtube_privacy": "public",
+    "instagram_max_per_day": 9,
+    "instagram_graph_version": "v23.0",
+    "tiktok_max_per_day": 5,
+    "tiktok_privacy": "SELF_ONLY"
+  }
 }

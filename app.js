@@ -30,6 +30,40 @@
     route();
   }
 
+  /* ---------- видео ---------- */
+  function videoSrc(p) {
+    if (!p.video) return "";
+    const recent = (state.index.days || []).slice(0, 7).some((d) => d.date === p.date);
+    return recent || !p.video_release_url ? p.video : p.video_release_url;
+  }
+  function posterSrc(p) {
+    if (!p.video) return p.image;
+    const recent = (state.index.days || []).slice(0, 7).some((d) => d.date === p.date);
+    return recent ? p.video.replace(/\.mp4$/, ".jpg") : (p.video_poster_release_url || p.image);
+  }
+  function videoBlock(p, open) {
+    if (!p.video) return "";
+    const src = videoSrc(p);
+    const player = `<video class="vplayer" controls playsinline preload="none" poster="${esc(posterSrc(p))}" src="${esc(src)}"></video>`;
+    const btns = `<div class="vbtns">
+        <a class="btn" href="${esc(src)}" download="${esc(p.name)}-git-hunter.mp4">⬇ Скачать видео</a>
+        ${p.post ? `<button class="btn ghost" data-copy="youtube" data-name="${esc(p.full_name)}">📋 Текст для YouTube</button>
+        <button class="btn ghost" data-copy="instagram" data-name="${esc(p.full_name)}">📋 Для Instagram</button>
+        <button class="btn ghost" data-copy="tiktok" data-name="${esc(p.full_name)}">📋 Для TikTok</button>` : ""}
+      </div><small class="vnote">Вертикальное видео 1080×1920${p.video_duration ? ` · ${Math.round(p.video_duration)} с` : ""}${p.video_mb ? ` · ${p.video_mb} МБ` : ""} — готово для Shorts, Reels и TikTok</small>`;
+    if (open) return `<div class="vwrap">${player}${btns}</div>`;
+    return `<details class="more video"><summary>🎬 Видео для Shorts / Reels / TikTok</summary><div class="vwrap">${player}${btns}</div></details>`;
+  }
+  function postText(p, kind) {
+    const t = p.post || {};
+    if (kind === "youtube") return `${t.youtube_title}\n\n${t.youtube_description}`;
+    return t.caption || "";
+  }
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); }
+    catch (e) { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+  }
+
   /* ---------- карточки ---------- */
   function section(title, text) { return text ? `<div class="s"><b>${title}</b><p>${esc(text)}</p></div>` : ""; }
   function howTo(t) { return t ? `<div class="s"><b>Как начать</b><p>${esc(t).replace(/`([^`]+)`/g, "<code>$1</code>")}</p></div>` : ""; }
@@ -49,6 +83,7 @@
         ${s.tagline ? `<p class="tag">${esc(s.tagline)}</p>` : p.description ? `<p class="tag">${esc(p.description)}</p>` : ""}
         <div class="meta"><span>⭐ ${fmt(p.stars)}</span>${p.language ? `<span>● ${esc(p.language)}</span>` : ""}${p.stars_per_day ? `<span class="hot">🔥 +${fmt(p.stars_per_day)}/день</span>` : ""}${p.license ? `<span>${esc(p.license)}</span>` : ""}${s.difficulty ? `<span class="diff">${esc(s.difficulty)}</span>` : ""}</div>
         ${rich ? section("Что это", s.what) + section("Зачем", s.why) + `<details class="more"><summary>Что умеет, кому пригодится, как начать</summary>${feats}${section("Кому пригодится", s.who)}${howTo(s.how_to_start)}</details>` : ""}
+        ${videoBlock(p)}
         ${s.fallback ? `<span class="fallback">Краткое описание по данным GitHub (ИИ-разбор недоступен)</span>` : ""}
         <div class="actions">
           ${p.audio ? `<button class="btn" data-play="${esc(p.full_name)}">▶ Слушать</button>` : ""}
@@ -127,7 +162,7 @@
     if (!p) { V.innerHTML = `<div class="empty">Проект не найден в подборках. <a href="https://github.com/${esc(name)}" target="_blank">Открыть на GitHub</a></div>`; return; }
     const s = p.summary || {};
     V.innerHTML = `<div class="sec-head"><div><h2>${esc(p.full_name)}</h2><p>${p.date ? `Из подборки за <a href="#/day/${p.date}">${p.date}</a>` : ""}</p></div></div>
-      <div class="detail"><div><img class="hero-img" src="${esc(p.readme_image || p.image)}" onerror="this.src='${esc(p.image)}'" alt="">
+      <div class="detail"><div>${p.video ? videoBlock(p, true) : ""}<img class="hero-img" src="${esc(p.readme_image || p.image)}" onerror="this.src='${esc(p.image)}'" alt="">
       ${p.readme_image ? `<img class="hero-img" style="margin-top:12px" src="${esc(p.image)}" alt="">` : ""}</div>
       <div class="card"><div class="body">
         ${s.tagline ? `<p class="tag">${esc(s.tagline)}</p>` : ""}
@@ -224,7 +259,10 @@
       saveFavs(); const y = scrollY; route(); scrollTo(0, y);
     } else if (d.favraw) { const p = JSON.parse(d.favraw); favs.set(p.full_name, p); saveFavs(); toast("Добавлено в избранное ★"); }
     else if (d.clearfav) { if (confirm("Очистить избранное?")) { favs.clear(); saveFavs(); route(); } }
-    else if (d.share) {
+    else if (d.copy) {
+      const p = state.list.find((x) => x.full_name === d.name) || state.projects.find((x) => x.full_name === d.name);
+      if (p) { await copyText(postText(p, d.copy)); toast({ youtube: "Название и описание для YouTube скопированы", instagram: "Подпись для Instagram скопирована", tiktok: "Подпись для TikTok скопирована" }[d.copy]); }
+    } else if (d.share) {
       const url = location.origin + location.pathname + "#/p/" + d.share;
       if (navigator.share) navigator.share({ title: d.share, url }).catch(() => {}); else { await navigator.clipboard?.writeText(url); toast("Ссылка скопирована"); }
     } else if (d.gh) location.hash = "#/search/github/" + encodeURIComponent(d.gh);
