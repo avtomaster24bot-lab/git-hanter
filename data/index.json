@@ -1,1 +1,83 @@
-{"days": [], "total": 0}
+{
+ "days": [
+  {
+   "date": "2026-11-22",
+   "count": 9,
+   "names": [
+    "Gathin23/cleanyourtv",
+    "erkamyaman/rust-anything",
+    "ccch1mneyyy/dsh-Go",
+    "bookwjitchieni1986/blender-ai-mcp-addon",
+    "EL4CTEO/fast-anything",
+    "Minireel/HGhub",
+    "iamajmeena/neonclipping",
+    "RoutineMiku/apkstart",
+    "lukecodecode99n4/kingdom-come-deliverance-2-cryengine-console-bridge-carr"
+   ]
+  }
+ ],
+ "total": 9,
+ "updated": "2026-11-22T18:31+05:00",
+ "categories": [
+  {
+   "id": "ai",
+   "name": "Искусственный интеллект",
+   "emoji": "🤖"
+  },
+  {
+   "id": "devtools",
+   "name": "Инструменты разработчика",
+   "emoji": "🛠"
+  },
+  {
+   "id": "automation",
+   "name": "Автоматизация",
+   "emoji": "⚙️"
+  },
+  {
+   "id": "bots",
+   "name": "Боты и Telegram",
+   "emoji": "💬"
+  },
+  {
+   "id": "web",
+   "name": "Веб-разработка",
+   "emoji": "🌐"
+  },
+  {
+   "id": "selfhosted",
+   "name": "Self-hosted",
+   "emoji": "🏠"
+  },
+  {
+   "id": "mobile",
+   "name": "Мобильные приложения",
+   "emoji": "📱"
+  },
+  {
+   "id": "media",
+   "name": "Видео, фото и звук",
+   "emoji": "🎬"
+  },
+  {
+   "id": "security",
+   "name": "Безопасность",
+   "emoji": "🔐"
+  },
+  {
+   "id": "user0",
+   "name": "Авто и автосервис",
+   "emoji": "🚗"
+  },
+  {
+   "id": "user1",
+   "name": "Заработок и бизнес",
+   "emoji": "💼"
+  }
+ ],
+ "last_stats": {
+  "ai": 0,
+  "fallback": 9,
+  "audio": 9
+ }
+}

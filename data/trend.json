@@ -1,0 +1,125 @@
+{
+ "updated": "2026-11-22T18:31+05:00",
+ "items": [
+  {
+   "full_name": "ItsNotRexed/Leonida",
+   "url": "https://github.com/ItsNotRexed/Leonida",
+   "description": "Leonida Is A Native PC Recompilation Of The Xbox Version Of Grand Theft Auto 6",
+   "stars": 10277,
+   "language": "Python",
+   "stars_per_day": 5957.1,
+   "image": "https://opengraph.githubassets.com/1/ItsNotRexed/Leonida",
+   "featured": false
+  },
+  {
+   "full_name": "erkamyaman/rust-anything",
+   "url": "https://github.com/erkamyaman/rust-anything",
+   "description": "Rewrite your whole app in Rust, one piece at a time, checked against the original's recorded behavior at every step. CLIs, HTTP servers and libraries in TypeScript, Python, C, Go, Ruby and Java.",
+   "stars": 7747,
+   "language": "Rust",
+   "stars_per_day": 1279.2,
+   "image": "https://opengraph.githubassets.com/1/erkamyaman/rust-anything",
+   "featured": true
+  },
+  {
+   "full_name": "krisgfx9/Wireless-Device-Battery-Monitor",
+   "url": "https://github.com/krisgfx9/Wireless-Device-Battery-Monitor",
+   "description": "Show the battery level of wireless mice, headsets, keyboards and controllers on the Windows 10/11 taskbar. Lightweight tray app, no vendor software needed. Supports Logitech, Razer, SteelSeries, Corsair, HyperX, Glorious, PS4/PS5 DualSense, Xbox and Bluetooth devices.",
+   "stars": 6005,
+   "language": "C++",
+   "stars_per_day": 1044.0,
+   "image": "https://opengraph.githubassets.com/1/krisgfx9/Wireless-Device-Battery-Monitor",
+   "featured": false
+  },
+  {
+   "full_name": "bookwjitchieni1986/blender-ai-mcp-addon",
+   "url": "https://github.com/bookwjitchieni1986/blender-ai-mcp-addon",
+   "description": "AI assistant and MCP server for Blender: visual chat, scene tools, multi-agent workflows. Works with ChatGPT/GPT, Claude, Gemini, Ollama, OpenCode. Blender AI addon, copilot for 3D, bpy Python scripting, MCP integration.",
+   "stars": 2740,
+   "language": null,
+   "stars_per_day": 928.7,
+   "image": "https://opengraph.githubassets.com/1/bookwjitchieni1986/blender-ai-mcp-addon",
+   "featured": true
+  },
+  {
+   "full_name": "gylive/google-ultra",
+   "url": "https://github.com/gylive/google-ultra",
+   "description": "",
+   "stars": 2661,
+   "language": "Python",
+   "stars_per_day": 518.5,
+   "image": "https://opengraph.githubassets.com/1/gylive/google-ultra",
+   "featured": false
+  },
+  {
+   "full_name": "iamajmeena/neonclipping",
+   "url": "https://github.com/iamajmeena/neonclipping",
+   "description": "Paste a link, get captioned 9:16 clips in ~2 min. Free, local, open-source clipping engine (audio-first, YouTube captions, local LLM).",
+   "stars": 1966,
+   "language": "Python",
+   "stars_per_day": 624.8,
+   "image": "https://opengraph.githubassets.com/1/iamajmeena/neonclipping",
+   "featured": true
+  },
+  {
+   "full_name": "sybil-solutions/inference-optimisation-skill",
+   "url": "https://github.com/sybil-solutions/inference-optimisation-skill",
+   "description": "Agent skill for hill-climbing local LLM serving speed (decode, speculative decoding, prefill, KV, startup, TTFT) on any hardware and quantization",
+   "stars": 1854,
+   "language": "Python",
+   "stars_per_day": 320.4,
+   "image": "https://opengraph.githubassets.com/1/sybil-solutions/inference-optimisation-skill",
+   "featured": false
+  },
+  {
+   "full_name": "hatsunemiku-ai/google-one-tools",
+   "url": "https://github.com/hatsunemiku-ai/google-one-tools",
+   "description": "",
+   "stars": 1211,
+   "language": "Python",
+   "stars_per_day": 739.3,
+   "image": "https://opengraph.githubassets.com/1/hatsunemiku-ai/google-one-tools",
+   "featured": false
+  },
+  {
+   "full_name": "R0Y00/Xbox2Windows",
+   "url": "https://github.com/R0Y00/Xbox2Windows",
+   "description": "GTA VI static recompilation research for x64 Windows. Source-built EXEs run on Windows, and two translated pixel shaders match reference outputs on hardware and WARP. Full-game startup is unverified.",
+   "stars": 1163,
+   "language": "Python",
+   "stars_per_day": 637.4,
+   "image": "https://opengraph.githubassets.com/1/R0Y00/Xbox2Windows",
+   "featured": false
+  },
+  {
+   "full_name": "omonkeyz/xbox-emulator",
+   "url": "https://github.com/omonkeyz/xbox-emulator",
+   "description": "Progress notes for running Xbox Series X|S builds on PC (TomBox + rage9)",
+   "stars": 1070,
+   "language": "Rust",
+   "stars_per_day": 874.1,
+   "image": "https://opengraph.githubassets.com/1/omonkeyz/xbox-emulator",
+   "featured": false
+  },
+  {
+   "full_name": "Lemxy/WinRust",
+   "url": "https://github.com/Lemxy/WinRust",
+   "description": "Windows shell replacement in Rust: taskbar, file manager, NTFS search, task manager, disk cleaner. One installer exe.",
+   "stars": 1060,
+   "language": "Rust",
+   "stars_per_day": 213.7,
+   "image": "https://opengraph.githubassets.com/1/Lemxy/WinRust",
+   "featured": false
+  },
+  {
+   "full_name": "chuanqisun/spaceship",
+   "url": "https://github.com/chuanqisun/spaceship",
+   "description": "Steer ideas like a space pilot!",
+   "stars": 1040,
+   "language": "HTML",
+   "stars_per_day": 174.8,
+   "image": "https://opengraph.githubassets.com/1/chuanqisun/spaceship",
+   "featured": false
+  }
+ ]
+}
