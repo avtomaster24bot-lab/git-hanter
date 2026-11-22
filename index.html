@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Git Hanter — интересные проекты GitHub каждый день</title>
+<meta name="description" content="Каждый день — свежие и быстрорастущие проекты GitHub с понятным разбором на русском и аудио-рассказом.">
+<meta property="og:title" content="Git Hanter — интересные проекты GitHub">
+<meta property="og:description" content="Ежедневная подборка проектов GitHub: что это, зачем, кому пригодится. С картинками и аудио.">
+<meta name="theme-color" content="#0b0f17">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="Git Hanter" href="feed.xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a href="#/" class="brand"><img src="assets/logo.svg" alt="" width="34" height="34"><span>Git <b>Hanter</b></span></a>
+    <nav class="nav">
+      <a href="#/" data-nav="today">Сегодня</a>
+      <a href="#/trend" data-nav="trend">Тренд недели</a>
+      <a href="#/archive" data-nav="archive">Архив</a>
+      <a href="#/fav" data-nav="fav">Избранное <span id="favCount" class="pill"></span></a>
+      <a href="feed.xml" class="rss" title="RSS-лента">RSS</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Находим интересные проекты на GitHub — <span class="grad">и объясняем простыми словами</span></h1>
+    <p class="sub">Каждое утро — свежая подборка: что за проект, зачем он нужен, что умеет и как начать. С картинкой и аудио-рассказом на минуту.</p>
+    <form id="searchForm" class="search" autocomplete="off">
+      <input id="q" type="search" placeholder="Например: telegram бот, AI видео, self-hosted заметки…" aria-label="Поиск">
+      <div class="modes">
+        <label><input type="radio" name="mode" value="local" checked> В подборках</label>
+        <label><input type="radio" name="mode" value="github"> По всему GitHub</label>
+      </div>
+      <button type="submit">Найти</button>
+    </form>
+    <div class="quick" id="quick"></div>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="toolbar" id="toolbar">
+    <div class="chips" id="catChips"></div>
+    <select id="langSel" aria-label="Язык программирования"><option value="">Все языки</option></select>
+  </div>
+  <div id="view"><div class="loading">Загружаю подборку…</div></div>
+</main>
+
+<footer class="foot wrap">
+  <p>Git Hanter обновляется автоматически каждый день в 08:00 (Алматы). Разборы пишет ИИ — проверяйте детали в README проекта.</p>
+  <p id="updated"></p>
+</footer>
+
+<div id="player" class="player hidden">
+  <button id="plPrev" title="Назад">⏮</button>
+  <div class="pl-info"><b id="plTitle"></b><small id="plSub"></small></div>
+  <audio id="plAudio" controls preload="none"></audio>
+  <button id="plNext" title="Дальше">⏭</button>
+  <button id="plClose" title="Закрыть">✕</button>
+</div>
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

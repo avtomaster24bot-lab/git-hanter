@@ -1,0 +1,24 @@
+{
+  "site_url": "https://avtomaster24bot-lab.github.io/git-hanter/",
+  "per_day": 9,
+  "max_per_category": 2,
+  "fresh_days": 45,
+  "min_stars": 40,
+  "voice": "ru-RU-SvetlanaNeural",
+  "model": "openai/gpt-4o-mini",
+  "categories": [
+    {"id": "ai", "name": "Искусственный интеллект", "emoji": "🤖", "queries": ["topic:llm", "topic:ai-agents", "topic:generative-ai"]},
+    {"id": "devtools", "name": "Инструменты разработчика", "emoji": "🛠", "queries": ["topic:developer-tools", "topic:cli"]},
+    {"id": "automation", "name": "Автоматизация", "emoji": "⚙️", "queries": ["topic:automation", "topic:workflow"]},
+    {"id": "bots", "name": "Боты и Telegram", "emoji": "💬", "queries": ["topic:telegram-bot", "topic:telegram", "topic:chatbot"]},
+    {"id": "web", "name": "Веб-разработка", "emoji": "🌐", "queries": ["topic:react", "topic:nextjs", "topic:web"]},
+    {"id": "selfhosted", "name": "Self-hosted", "emoji": "🏠", "queries": ["topic:self-hosted", "topic:selfhosted"]},
+    {"id": "mobile", "name": "Мобильные приложения", "emoji": "📱", "queries": ["topic:android", "topic:ios", "topic:flutter"]},
+    {"id": "media", "name": "Видео, фото и звук", "emoji": "🎬", "queries": ["topic:video", "topic:image-generation", "topic:text-to-speech"]},
+    {"id": "security", "name": "Безопасность", "emoji": "🔐", "queries": ["topic:security", "topic:privacy"]}
+  ],
+  "user_topics": [
+    {"name": "Авто и автосервис", "emoji": "🚗", "query": "car OR automotive OR obd2"},
+    {"name": "Заработок и бизнес", "emoji": "💼", "query": "crm OR ecommerce OR invoice"}
+  ]
+}
