@@ -45,7 +45,7 @@
         ${p.category_name ? `<span class="badge">${esc(p.category_emoji || "")} ${esc(p.category_name)}</span>` : ""}
         ${i != null ? `<span class="rank">#${i + 1}</span>` : ""}</a>
       <div class="body">
-        <div class="title">${p.avatar ? `<img src="${esc(p.avatar)}&s=56" alt="">` : ""}<div><h3><a href="#/p/${esc(p.full_name)}">${esc(p.name || p.full_name)}</a></h3><small>${esc(p.owner || p.full_name.split("/")[0])}</small></div></div>
+        <div class="title"><img src="https://github.com/${esc(p.owner || p.full_name.split("/")[0])}.png?size=56" alt="" loading="lazy" onerror="this.remove()"><div><h3><a href="#/p/${esc(p.full_name)}">${esc(p.name || p.full_name)}</a></h3><small>${esc(p.owner || p.full_name.split("/")[0])}</small></div></div>
         ${s.tagline ? `<p class="tag">${esc(s.tagline)}</p>` : p.description ? `<p class="tag">${esc(p.description)}</p>` : ""}
         <div class="meta"><span>⭐ ${fmt(p.stars)}</span>${p.language ? `<span>● ${esc(p.language)}</span>` : ""}${p.stars_per_day ? `<span class="hot">🔥 +${fmt(p.stars_per_day)}/день</span>` : ""}${p.license ? `<span>${esc(p.license)}</span>` : ""}${s.difficulty ? `<span class="diff">${esc(s.difficulty)}</span>` : ""}</div>
         ${rich ? section("Что это", s.what) + section("Зачем", s.why) + `<details class="more"><summary>Что умеет, кому пригодится, как начать</summary>${feats}${section("Кому пригодится", s.who)}${howTo(s.how_to_start)}</details>` : ""}
@@ -191,6 +191,7 @@
     else if (a === "search") {
       const mode = rest[0], q = rest.slice(1).join("/");
       $("#q").value = q;
+      const radio = document.querySelector(`input[name=mode][value=${mode === "local" ? "local" : "github"}]`); if (radio) radio.checked = true;
       if (mode === "local") viewLocalSearch(q); else viewGithubSearch(q, mode === "fresh" ? "fresh" : "stars");
     } else viewDay();
     if (a && a !== "search") window.scrollTo({ top: $("main").offsetTop - 70, behavior: "smooth" });
