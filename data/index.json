@@ -10,14 +10,14 @@
     "EL4CTEO/fast-anything",
     "iamajmeena/neonclipping",
     "wangzan101/Mika",
-    "RoutineMiku/apkstart",
-    "ersinkoc/phonebox",
+    "KKKKhazix/agent-autoloop",
+    "sybil-solutions/inference-optimisation-skill",
     "FrigadeHQ/yogurt"
    ]
   }
  ],
  "total": 9,
- "updated": "2026-11-22T18:43+05:00",
+ "updated": "2026-11-22T18:59+05:00",
  "categories": [
   {
    "id": "ai",
@@ -76,8 +76,8 @@
   }
  ],
  "last_stats": {
-  "ai": 9,
-  "fallback": 0,
+  "ai": 8,
+  "fallback": 1,
   "audio": 9
  }
 }
