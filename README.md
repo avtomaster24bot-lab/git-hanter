@@ -88,7 +88,7 @@ python -m http.server 8000   # и откройте http://localhost:8000
    (для канала можно использовать `@имя_канала`).
 4. В репозитории: **Settings → Secrets and variables → Actions → New repository secret**:
    - `TELEGRAM_BOT_TOKEN` — токен бота
-   - `TELEGRAM_CHAT_ID` — id чата
+   - `TELEGRAM_CHAT_ID` — id чата или @канал; несколько через запятую
 5. Готово: со следующего запуска подборка будет приходить в Telegram — заголовок, затем для каждого проекта картинка с описанием и аудио-рассказ.
 
 Без этих секретов шаг Telegram просто пропускается.
