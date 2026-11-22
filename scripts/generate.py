@@ -118,15 +118,58 @@ def collect_candidates(featured):
     return list(cands.values())
 
 
+SPAM_WORDS = ("cheat", "crack", "keygen", "hack", "loader", "executor", "spoofer", "unlocker", "aimbot",
+              "injector", "free download", "mod menu", "mod-menu", "trainer", "bypass", "activator",
+              "license key", "free premium", "premium free", "generator free", "robux", "v-bucks", "nulled",
+              "warez", "console-bridge", "dll", "unlock all", "fps boost", "wallhack", "esp ")
+_users = {}
+
+
+def vet(repo):
+    """Отсекаем спам и репозитории с накрученными звёздами."""
+    text = f"{repo['full_name']} {repo.get('description') or ''}".lower()
+    if any(w in text for w in SPAM_WORDS):
+        return "spam-words"
+    stars, forks = repo["stargazers_count"], repo.get("forks_count", 0)
+    if forks < 3:
+        return "few-forks"
+    if stars > 1000 and forks / stars > 0.6:
+        return "fork-farm"
+    if not repo.get("description"):
+        return "no-description"
+    login = repo["owner"]["login"]
+    if login not in _users:
+        r = S.get(f"https://api.github.com/users/{login}", timeout=30)
+        _users[login] = r.json() if r.status_code == 200 else {}
+    u = _users[login]
+    if not u:
+        return "no-owner"
+    owner_age = age_days(u.get("created_at", dt.datetime.now(dt.timezone.utc).isoformat()))
+    if owner_age < CFG.get("min_owner_age_days", 120):
+        return "young-owner"
+    if u.get("type") == "User" and (u.get("followers", 0) < 5 or u.get("public_repos", 0) < 2):
+        return "weak-owner"
+    return ""
+
+
 def pick(cands):
     per_day = CFG.get("per_day", 9)
     max_cat = CFG.get("max_per_category", 2)
     cands.sort(key=lambda r: r["_score"], reverse=True)
     chosen, per_cat, owners = [], {}, set()
+    checked = 0
     for r in cands:
         cid = r["_cat"][0]
         owner = r["owner"]["login"].lower()
         if per_cat.get(cid, 0) >= max_cat or owner in owners:
+            continue
+        if checked > 120:
+            break
+        checked += 1
+        why = vet(r)
+        r["_vet"] = why
+        if why:
+            log(f"  пропуск {r['full_name']}: {why}")
             continue
         chosen.append(r)
         per_cat[cid] = per_cat.get(cid, 0) + 1
@@ -135,8 +178,13 @@ def pick(cands):
             break
     if len(chosen) < per_day:  # добираем без ограничений по категориям
         for r in cands:
-            if r not in chosen:
-                chosen.append(r)
+            if r in chosen or r.get("_vet"):
+                continue
+            if "_vet" not in r:
+                r["_vet"] = vet(r)
+                if r["_vet"]:
+                    continue
+            chosen.append(r)
             if len(chosen) >= per_day:
                 break
     return chosen
@@ -209,48 +257,55 @@ README (фрагмент):
 }}"""
 
 
+def llm_providers():
+    """Сначала свой OpenAI-совместимый API (секреты), затем бесплатный Pollinations без ключа."""
+    out = []
+    url, key = os.environ.get("LLM_API_URL", "").strip(), os.environ.get("LLM_API_KEY", "").strip()
+    if url and key:
+        out.append(("custom", url.rstrip("/") + ("" if url.rstrip("/").endswith("/chat/completions") else "/chat/completions"),
+                    {"Authorization": f"Bearer {key}"}, os.environ.get("LLM_MODEL") or CFG.get("model", "gpt-4o-mini")))
+    if CFG.get("use_free_ai", True):
+        out.append(("pollinations", "https://text.pollinations.ai/openai", {}, CFG.get("free_model", "openai")))
+    return out
+
+
 def ai_summary(repo, readme):
-    if not TOKEN:
-        return None
-    body = {
-        "model": CFG.get("model", "openai/gpt-4o-mini"),
-        "temperature": 0.5,
-        "response_format": {"type": "json_object"},
-        "messages": [
-            {"role": "system", "content": "Отвечай только валидным JSON на русском языке."},
-            {"role": "user", "content": PROMPT.format(
-                name=repo["full_name"], desc=repo.get("description") or "—",
-                lang=repo.get("language") or "—", stars=repo["stargazers_count"],
-                topics=", ".join(repo.get("topics", [])[:10]) or "—",
-                homepage=repo.get("homepage") or "—", readme=clean_readme(readme))},
-        ],
-    }
-    for attempt in range(3):
-        try:
-            r = requests.post("https://models.github.ai/inference/chat/completions", json=body, timeout=90,
-                              headers={"Authorization": f"Bearer {TOKEN}", "Content-Type": "application/json",
-                                       "Accept": "application/json"})
-            if r.status_code == 429:
-                wait = int(r.headers.get("Retry-After", "30"))
-                log(f"models 429, wait {wait}s")
-                if wait > 120:
-                    return None
-                time.sleep(wait)
-                continue
-            if r.status_code != 200:
-                log(f"models error {r.status_code}: {r.text[:300]}")
-                return None
-            content = r.json()["choices"][0]["message"]["content"]
-            content = re.sub(r"^```(json)?|```$", "", content.strip()).strip()
-            data = json.loads(content)
-            if not data.get("what") or not data.get("narration"):
-                return None
-            if isinstance(data.get("features"), str):
-                data["features"] = [data["features"]]
-            return data
-        except Exception as e:  # noqa
-            log(f"models exception: {e}")
-            time.sleep(5)
+    prompt = PROMPT.format(
+        name=repo["full_name"], desc=repo.get("description") or "—",
+        lang=repo.get("language") or "—", stars=repo["stargazers_count"],
+        topics=", ".join(repo.get("topics", [])[:10]) or "—",
+        homepage=repo.get("homepage") or "—", readme=clean_readme(readme))
+    for name, url, headers, model in llm_providers():
+        body = {"model": model, "temperature": 0.5, "response_format": {"type": "json_object"},
+                "messages": [{"role": "system", "content": "Отвечай только валидным JSON на русском языке."},
+                             {"role": "user", "content": prompt}]}
+        for attempt in range(3):
+            try:
+                r = requests.post(url, json=body, timeout=120,
+                                  headers={"Content-Type": "application/json", "Accept": "application/json", **headers})
+                if r.status_code == 429:
+                    wait = int(r.headers.get("Retry-After", "20") or 20)
+                    log(f"{name} 429, wait {wait}s")
+                    if wait > 120:
+                        break
+                    time.sleep(wait + 1)
+                    continue
+                if r.status_code != 200:
+                    log(f"{name} error {r.status_code}: {r.text[:200]}")
+                    time.sleep(5)
+                    continue
+                content = r.json()["choices"][0]["message"]["content"] or ""
+                m = re.search(r"\{.*\}", content, re.S)
+                data = json.loads(m.group(0) if m else content)
+                if not data.get("what") or not data.get("narration"):
+                    raise ValueError("incomplete json")
+                if isinstance(data.get("features"), str):
+                    data["features"] = [data["features"]]
+                data["ai"] = name
+                return data
+            except Exception as e:  # noqa
+                log(f"{name} exception: {e}")
+                time.sleep(5)
     return None
 
 
@@ -377,6 +432,7 @@ def main():
         log(f"[{i}/{len(chosen)}] {fn}")
         readme, _ = fetch_readme(fn)
         summary = ai_summary(repo, readme)
+        time.sleep(CFG.get("ai_pause_sec", 4))
         if summary:
             stats["ai"] += 1
         else:

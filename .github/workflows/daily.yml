@@ -15,7 +15,6 @@ on:
 
 permissions:
   contents: write
-  models: read
   pages: write
   id-token: write
 
@@ -41,6 +40,9 @@ jobs:
       - name: Собрать подборку
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LLM_API_URL: ${{ secrets.LLM_API_URL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
           FORCE: ${{ inputs.force && '1' || '0' }}
         run: python scripts/generate.py
       - name: Сохранить в репозиторий

@@ -26,7 +26,7 @@ GitHub Actions (каждый день 03:00 UTC)
  └─ scripts/generate.py
      ├─ GitHub Search API: свежие репозитории по темам из topics.json
      ├─ рейтинг: звёзды в день, разнообразие категорий, без повторов
-     ├─ README → GitHub Models (gpt-4o-mini) → разбор на русском (JSON)
+     ├─ README → ИИ (бесплатный Pollinations.ai без ключа или ваш API) → разбор на русском (JSON)
      │    └─ если ИИ недоступен — шаблон из описания репозитория
      ├─ edge-tts → audio/*.mp3 (запасной вариант — gTTS)
      └─ data/ДАТА.json, data/index.json, data/projects.json, data/trend.json, feed.xml
@@ -46,7 +46,28 @@ GitHub Actions (каждый день 03:00 UTC)
   `{"name": "Авто и автосервис", "emoji": "🚗", "query": "car OR automotive OR obd2"}`.
 - `per_day` — сколько проектов в подборке, `max_per_category` — не больше N из одной категории,
   `fresh_days` — насколько свежими должны быть проекты, `min_stars` — минимум звёзд,
-  `voice` — голос (`ru-RU-SvetlanaNeural` или `ru-RU-DmitryNeural`), `model` — модель GitHub Models.
+  `voice` — голос (`ru-RU-SvetlanaNeural` или `ru-RU-DmitryNeural`).
+
+## ИИ-разборы
+
+По умолчанию разборы пишет бесплатный анонимный API [Pollinations.ai](https://pollinations.ai) — ключ не нужен.
+(GitHub Models, который планировался изначально, GitHub закрыл 30.07.2026.)
+
+Если хотите качественнее и стабильнее — добавьте секреты с любым OpenAI-совместимым API, он будет использоваться первым:
+
+| Секрет | Пример |
+|---|---|
+| `LLM_API_URL` | `https://api.groq.com/openai/v1` · `https://openrouter.ai/api/v1` · `https://generativelanguage.googleapis.com/v1beta/openai` |
+| `LLM_API_KEY` | ключ сервиса (у Groq, OpenRouter и Google AI Studio есть бесплатные) |
+| `LLM_MODEL` | `llama-3.3-70b-versatile` · `openai/gpt-4o-mini` · `gemini-2.0-flash` |
+
+Если ИИ недоступен совсем, карточка собирается по шаблону из описания репозитория (помечается на сайте).
+
+## Защита от спама
+
+GitHub полон репозиториев с накрученными звёздами и «читами» с вирусами. Генератор отсеивает:
+слова-маркеры (crack, cheat, keygen, loader…), аккаунты моложе 120 дней, авторов без подписчиков,
+проекты без форков и описания, «фермы форков».
 
 ## Запуск вручную
 
