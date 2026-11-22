@@ -42,7 +42,7 @@ e = html.escape
 
 def send(CHAT):
     call("sendMessage", data={"chat_id": CHAT, "parse_mode": "HTML", "disable_web_page_preview": "true",
-                              "text": f"🔎 <b>Git Hanter — подборка за {date}</b>\n{len(day['projects'])} интересных проектов GitHub.\n"
+                              "text": f"🔎 <b>Git Hunter — подборка за {date}</b>\n{len(day['projects'])} интересных проектов GitHub.\n"
                                       f"Сайт с архивом и поиском: {SITE}#/day/{date}"})
     for p in day["projects"]:
         s = p["summary"]
@@ -59,7 +59,7 @@ def send(CHAT):
             call("sendMessage", data={"chat_id": CHAT, "text": cap, "parse_mode": "HTML"})
         if p.get("audio") and (ROOT / p["audio"]).exists():
             with open(ROOT / p["audio"], "rb") as f:
-                call("sendAudio", data={"chat_id": CHAT, "title": p["name"], "performer": "Git Hanter"},
+                call("sendAudio", data={"chat_id": CHAT, "title": p["name"], "performer": "Git Hunter"},
                      files={"audio": (Path(p["audio"]).name, f, "audio/mpeg")})
         time.sleep(1.5)
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Git Hanter: ежедневная подборка интересных проектов GitHub.
+"""Git Hunter: ежедневная подборка интересных проектов GitHub.
 
 Ищет свежие и быстрорастущие репозитории, пишет понятный разбор на русском
 (через GitHub Models, с запасным шаблоном), делает аудио (edge-tts / gTTS)
@@ -402,12 +402,12 @@ def build_feed(index, projects):
             for p in ps)
         pub = dt.datetime.fromisoformat(d["date"]).replace(hour=8, tzinfo=TZ)
         items.append(
-            f"<item><title>Git Hanter — подборка за {d['date']}</title><link>{site}#/day/{d['date']}</link>"
+            f"<item><title>Git Hunter — подборка за {d['date']}</title><link>{site}#/day/{d['date']}</link>"
             f"<guid isPermaLink=\"false\">git-hanter-{d['date']}</guid>"
             f"<pubDate>{pub.strftime('%a, %d %b %Y %H:%M:%S %z')}</pubDate>"
             f"<description><![CDATA[{desc}]]></description></item>")
     xml = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\"><channel>"
-           f"<title>Git Hanter — интересные проекты GitHub</title><link>{site}</link>"
+           f"<title>Git Hunter — интересные проекты GitHub</title><link>{site}</link>"
            "<description>Каждый день — свежие проекты GitHub с понятным разбором на русском</description>"
            "<language>ru</language>" + "".join(items) + "</channel></rss>\n")
     (ROOT / "feed.xml").write_text(xml, encoding="utf-8")
@@ -516,7 +516,7 @@ def main():
     gh_out = os.environ.get("GITHUB_STEP_SUMMARY")
     if gh_out:
         with open(gh_out, "a", encoding="utf-8") as f:
-            f.write(f"## Git Hanter {TODAY}\n\nПроектов: {len(day)}, AI-разборов: {stats['ai']}, "
+            f.write(f"## Git Hunter {TODAY}\n\nПроектов: {len(day)}, AI-разборов: {stats['ai']}, "
                     f"шаблонов: {stats['fallback']}, аудио: {stats['audio']}\n\n" +
                     "\n".join(f"- [{p['full_name']}]({p['url']}) ⭐{p['stars']} — {p['summary'].get('tagline','')}" for p in day))
 
