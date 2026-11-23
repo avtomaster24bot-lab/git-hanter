@@ -24,6 +24,15 @@ from pathlib import Path
 import requests
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
+try:
+    from octopus_avatar import (
+        add_octopus, tts_male, SUB_Y_WITH_AVATAR, OCTOPUS_TOP_Y,
+    )
+    HAVE_OCTOPUS = True
+except ImportError:
+    HAVE_OCTOPUS = False
+    SUB_Y_WITH_AVATAR = 1280
+
 ROOT = Path(__file__).resolve().parent.parent
 CFG = json.loads((ROOT / "topics.json").read_text(encoding="utf-8"))
 SITE = CFG["site_url"].rstrip("/") + "/"
@@ -40,7 +49,7 @@ TRANS = 0.5
 END_CARD = 3.0
 LEAD = 0.3                   # пауза перед голосом
 MAX_LEN = 58.5
-SUB_Y = 1340                 # центр субтитров (выше подписи TikTok/Reels)
+SUB_Y = 1280                 # центр субтитров: выше осьминога внизу кадра
 
 BG = (11, 15, 23)
 ACC = (124, 92, 255)
@@ -339,14 +348,40 @@ async def _tts(text, mp3):
 
 
 def tts_with_words(text, mp3):
-    for attempt in range(4):
+    """Мужской голос для видео. Женский (Svetlana) не используется даже как запасной."""
+    if HAVE_OCTOPUS:
+        words, voice = tts_male(text, Path(mp3))
+        tts_with_words.last_voice = voice
+        return words
+    # если модуль аватара недоступен — всё равно только Dmitry, без Svetlana
+    import time
+    orig = VOICE
+    # временно не используем CFG voice, только Dmitry
+    for attempt in range(6):
         try:
-            return asyncio.run(_tts(text, mp3))
+            import edge_tts
+            async def _male():
+                words, buf = [], bytearray()
+                rate = ["-5%", "-8%", "+0%", "-3%"][attempt % 4]
+                comm = edge_tts.Communicate(text, "ru-RU-DmitryNeural", rate=rate, boundary="WordBoundary")
+                async for ch in comm.stream():
+                    if ch["type"] == "audio":
+                        buf.extend(ch["data"])
+                    elif ch["type"] == "WordBoundary":
+                        words.append((ch["offset"] / 1e7, (ch["offset"] + ch["duration"]) / 1e7, ch["text"]))
+                if len(buf) < 5000 or not words:
+                    raise RuntimeError("пустой ответ edge-tts")
+                Path(mp3).write_bytes(bytes(buf))
+                return words
+            words = asyncio.run(_male())
+            tts_with_words.last_voice = "ru-RU-DmitryNeural"
+            return words
         except Exception as e:  # noqa
-            log("edge-tts:", e)
-            import time
+            log("edge-tts Dmitry:", e)
             time.sleep(4 * (attempt + 1))
-    return None
+    raise RuntimeError("Мужской голос недоступен (ru-RU-DmitryNeural). Женский запасной отключён.")
+
+tts_with_words.last_voice = None
 
 
 def duration(path):
@@ -525,6 +560,16 @@ def build_video(p, work, out_mp4, audio_mp3):
         raise RuntimeError("ffmpeg: " + r.stderr[-1500:])
     slides[0].convert("RGB").crop((PAN_X // 2, PAN_Y // 2, PAN_X // 2 + W, PAN_Y // 2 + H)).resize((540, 960)).save(
         out_mp4.with_suffix(".jpg"), quality=82)
+
+    if HAVE_OCTOPUS and os.environ.get("OCTOPUS", "1") != "0":
+        oct_out = Path(str(out_mp4) + ".oct.mp4")
+        try:
+            add_octopus(out_mp4, Path(audio_mp3), oct_out, lead=LEAD, words=words, work=work)
+            oct_out.replace(out_mp4)
+            log("  осьминог наложен, голос:", tts_with_words.last_voice or "?")
+        except Exception as e:  # noqa
+            log("  осьминог: ошибка наложения:", e)
+            oct_out.unlink(missing_ok=True)
     return total, bool(words)
 
 
