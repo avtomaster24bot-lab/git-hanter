@@ -1,6 +1,21 @@
 {
  "days": [
   {
+   "date": "2026-11-23",
+   "count": 9,
+   "names": [
+    "RoutineMiku/apkstart",
+    "ersinkoc/phonebox",
+    "l0ng-ai/openidea",
+    "erkamyaman/safe-anything",
+    "vercel-labs/ui",
+    "expo/exact",
+    "w01fb0ss/PiBot",
+    "CzzzzzzJ/mdldm-maitian",
+    "microsoft/TokenEconomizer"
+   ]
+  },
+  {
    "date": "2026-11-22",
    "count": 9,
    "names": [
@@ -16,8 +31,8 @@
    ]
   }
  ],
- "total": 9,
- "updated": "2026-11-22T18:59+05:00",
+ "total": 18,
+ "updated": "2026-11-23T17:05+05:00",
  "categories": [
   {
    "id": "ai",

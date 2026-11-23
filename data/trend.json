@@ -1,124 +1,124 @@
 {
- "updated": "2026-11-22T18:59+05:00",
+ "updated": "2026-11-23T17:05+05:00",
  "items": [
   {
    "full_name": "ItsNotRexed/Leonida",
    "url": "https://github.com/ItsNotRexed/Leonida",
    "description": "Leonida Is A Native PC Recompilation Of The Xbox Version Of Grand Theft Auto 6",
-   "stars": 10513,
+   "stars": 19042,
    "language": "Python",
-   "stars_per_day": 6026.2,
+   "stars_per_day": 7143.5,
    "image": "https://opengraph.githubassets.com/1/ItsNotRexed/Leonida",
-   "featured": false
-  },
-  {
-   "full_name": "erkamyaman/rust-anything",
-   "url": "https://github.com/erkamyaman/rust-anything",
-   "description": "Rewrite your whole app in Rust, one piece at a time, checked against the original's recorded behavior at every step. CLIs, HTTP servers and libraries in TypeScript, Python, C, Go, Ruby and Java.",
-   "stars": 7762,
-   "language": "Rust",
-   "stars_per_day": 1277.6,
-   "image": "https://opengraph.githubassets.com/1/erkamyaman/rust-anything",
-   "featured": true
-  },
-  {
-   "full_name": "krisgfx9/Wireless-Device-Battery-Monitor",
-   "url": "https://github.com/krisgfx9/Wireless-Device-Battery-Monitor",
-   "description": "Show the battery level of wireless mice, headsets, keyboards and controllers on the Windows 10/11 taskbar. Lightweight tray app, no vendor software needed. Supports Logitech, Razer, SteelSeries, Corsair, HyperX, Glorious, PS4/PS5 DualSense, Xbox and Bluetooth devices.",
-   "stars": 6016,
-   "language": "C++",
-   "stars_per_day": 1042.4,
-   "image": "https://opengraph.githubassets.com/1/krisgfx9/Wireless-Device-Battery-Monitor",
    "featured": false
   },
   {
    "full_name": "EL4CTEO/fast-anything",
    "url": "https://github.com/EL4CTEO/fast-anything",
    "description": "Don't rewrite it in Rust. Rewrite the 5% that's slow: profile Python, Node or Ruby apps, port the hot functions with your coding agent, prove they behave the same.",
-   "stars": 928,
+   "stars": 2646,
    "language": "Rust",
-   "stars_per_day": 928.0,
+   "stars_per_day": 1398.1,
    "image": "https://opengraph.githubassets.com/1/EL4CTEO/fast-anything",
    "featured": true
+  },
+  {
+   "full_name": "os6/nospeaker",
+   "url": "https://github.com/os6/nospeaker",
+   "description": "make your macbook's trackpad talk using its haptic motor",
+   "stars": 880,
+   "language": "Swift",
+   "stars_per_day": 880.0,
+   "image": "https://opengraph.githubassets.com/1/os6/nospeaker",
+   "featured": false
   },
   {
    "full_name": "omonkeyz/xbox-emulator",
    "url": "https://github.com/omonkeyz/xbox-emulator",
    "description": "Progress notes for running Xbox Series X|S builds on PC (TomBox + rage9)",
-   "stars": 1077,
+   "stars": 1480,
    "language": "Rust",
-   "stars_per_day": 866.1,
+   "stars_per_day": 683.7,
    "image": "https://opengraph.githubassets.com/1/omonkeyz/xbox-emulator",
-   "featured": false
-  },
-  {
-   "full_name": "R0Y00/Xbox2Windows",
-   "url": "https://github.com/R0Y00/Xbox2Windows",
-   "description": "GTA VI static recompilation research for x64 Windows. Source-built EXEs run on Windows, and two translated pixel shaders match reference outputs on hardware and WARP. Full-game startup is unverified.",
-   "stars": 1173,
-   "language": "Python",
-   "stars_per_day": 636.1,
-   "image": "https://opengraph.githubassets.com/1/R0Y00/Xbox2Windows",
    "featured": false
   },
   {
    "full_name": "iamajmeena/neonclipping",
    "url": "https://github.com/iamajmeena/neonclipping",
    "description": "Paste a link, get captioned 9:16 clips in ~2 min. Free, local, open-source clipping engine (audio-first, YouTube captions, local LLM).",
-   "stars": 1978,
+   "stars": 2222,
    "language": "Python",
-   "stars_per_day": 624.8,
+   "stars_per_day": 543.7,
    "image": "https://opengraph.githubassets.com/1/iamajmeena/neonclipping",
    "featured": true
   },
   {
-   "full_name": "sybil-solutions/inference-optimisation-skill",
-   "url": "https://github.com/sybil-solutions/inference-optimisation-skill",
-   "description": "Agent skill for hill-climbing local LLM serving speed (decode, speculative decoding, prefill, KV, startup, TTFT) on any hardware and quantization",
-   "stars": 1858,
+   "full_name": "R0Y00/Xbox2Windows",
+   "url": "https://github.com/R0Y00/Xbox2Windows",
+   "description": "Static recompilation research for Xbox Series X|S software on x64 Windows, with source-built CPU and GPU tests. Full-game startup is unverified.",
+   "stars": 1393,
    "language": "Python",
-   "stars_per_day": 320.1,
-   "image": "https://opengraph.githubassets.com/1/sybil-solutions/inference-optimisation-skill",
-   "featured": true
+   "stars_per_day": 503.8,
+   "image": "https://opengraph.githubassets.com/1/R0Y00/Xbox2Windows",
+   "featured": false
   },
   {
-   "full_name": "sybil-solutions/skill-distill",
-   "url": "https://github.com/sybil-solutions/skill-distill",
-   "description": "Distill a good Claude Code / Codex session into a skill an open-weight model can follow to reproduce the task",
-   "stars": 431,
-   "language": "Python",
-   "stars_per_day": 285.2,
-   "image": "https://opengraph.githubassets.com/1/sybil-solutions/skill-distill",
+   "full_name": "AFK-surf/xnulinux",
+   "url": "https://github.com/AFK-surf/xnulinux",
+   "description": "XNU as a loadable kernel module inside Linux (macOS personality for arm64 Linux)",
+   "stars": 875,
+   "language": "Objective-C++",
+   "stars_per_day": 284.6,
+   "image": "https://opengraph.githubassets.com/1/AFK-surf/xnulinux",
    "featured": false
   },
   {
    "full_name": "leanprover-community/riemann-hypothesis",
    "url": "https://github.com/leanprover-community/riemann-hypothesis",
    "description": "Independent Comparator setup for the Lean formalization of the Riemann Hypothesis (Alpöge, 2026-11-20)",
-   "stars": 531,
+   "stars": 722,
    "language": "Lean",
-   "stars_per_day": 270.0,
+   "stars_per_day": 250.0,
    "image": "https://opengraph.githubassets.com/1/leanprover-community/riemann-hypothesis",
-   "featured": false
-  },
-  {
-   "full_name": "CocoSgt/riemann-hypothesis-lean",
-   "url": "https://github.com/CocoSgt/riemann-hypothesis-lean",
-   "description": "Mirror of Levent Alpöge's Lean proof of the Riemann Hypothesis (with Claude). All credit to Levent Alpöge. Source: alpo.ge",
-   "stars": 498,
-   "language": "Lean",
-   "stars_per_day": 254.3,
-   "image": "https://opengraph.githubassets.com/1/CocoSgt/riemann-hypothesis-lean",
    "featured": false
   },
   {
    "full_name": "Lemxy/WinRust",
    "url": "https://github.com/Lemxy/WinRust",
    "description": "Windows shell replacement in Rust: taskbar, file manager, NTFS search, task manager, disk cleaner. One installer exe.",
-   "stars": 1071,
+   "stars": 1319,
    "language": "Rust",
-   "stars_per_day": 215.0,
+   "stars_per_day": 223.5,
    "image": "https://opengraph.githubassets.com/1/Lemxy/WinRust",
+   "featured": false
+  },
+  {
+   "full_name": "w01fb0ss/PiBot",
+   "url": "https://github.com/w01fb0ss/PiBot",
+   "description": "Open-source, local-first AI agent team for your desktop: multi-agent group chats, computer use, browser, MCP, routines and approvals. macOS, Windows, Linux + Android. Built on pi.",
+   "stars": 468,
+   "language": "TypeScript",
+   "stars_per_day": 211.2,
+   "image": "https://opengraph.githubassets.com/1/w01fb0ss/PiBot",
+   "featured": true
+  },
+  {
+   "full_name": "danielwh2/sprite-stacking",
+   "url": "https://github.com/danielwh2/sprite-stacking",
+   "description": "Agent skill: turn four pixel art views into fake-3D sprites you can spin. Works with Claude Code, Codex, Cursor, OpenCode, Gemini CLI, Pi.",
+   "stars": 571,
+   "language": "HTML",
+   "stars_per_day": 197.0,
+   "image": "https://opengraph.githubassets.com/1/danielwh2/sprite-stacking",
+   "featured": false
+  },
+  {
+   "full_name": "sybil-solutions/skill-distill",
+   "url": "https://github.com/sybil-solutions/skill-distill",
+   "description": "Distill a good Claude Code / Codex session into a skill an open-weight model can follow to reproduce the task",
+   "stars": 476,
+   "language": "Python",
+   "stars_per_day": 195.7,
+   "image": "https://opengraph.githubassets.com/1/sybil-solutions/skill-distill",
    "featured": false
   }
  ]
