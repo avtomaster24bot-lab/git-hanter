@@ -42,12 +42,35 @@ TENTACLE_ORDER = [2, 5, 1, 6, 0, 7, 3, 4]
 # Предпочтительный мужской голос и запасные темпы (Dmitry часто сбоит на +5%).
 MALE_VOICE = "ru-RU-DmitryNeural"
 DMITRY_RATES = ("-5%", "-8%", "+0%", "-3%", "+3%")
-PIPER_DMITRI = Path("/home/box/.zavod_tts/ru_RU-dmitri-medium.onnx")
-PIPER_MALE_MODELS = (
-    PIPER_DMITRI,
-    Path("/home/box/.zavod_tts/ru_RU-ruslan-medium.onnx"),
-    Path("/home/box/.zavod_tts/ru_RU-denis-medium.onnx"),
-)
+def _piper_male_models():
+    """Мужские модели Piper: переменные окружения, кэш Actions, локальный ящик."""
+    names = (
+        "ru_RU-dmitri-medium.onnx",
+        "ru_RU-ruslan-medium.onnx",
+        "ru_RU-denis-medium.onnx",
+    )
+    out = []
+    env = os.environ.get("PIPER_MODEL")
+    if env:
+        out.append(Path(env))
+    roots = [
+        Path(os.environ["PIPER_DIR"]) if os.environ.get("PIPER_DIR") else None,
+        Path.home() / ".local/share/piper",
+        Path("/home/box/.zavod_tts"),
+        Path("/opt/piper"),
+    ]
+    for root in roots:
+        if not root:
+            continue
+        for name in names:
+            cand = root / name
+            if cand not in out:
+                out.append(cand)
+    return tuple(out)
+
+
+PIPER_DMITRI = Path.home() / ".local/share/piper" / "ru_RU-dmitri-medium.onnx"
+PIPER_MALE_MODELS = _piper_male_models()  # пересчитываем при импорте; tts_piper смотрит exists()
 
 
 def log(*a):
@@ -75,28 +98,29 @@ def _stroke(draw, pts, width, fill):
 
 
 def _tentacle_specs(phase=0.0, point=0.0, point_side=1):
+    # Координаты в единицах rx широкой круглой головы (как купол на логотипе).
     specs = [
-        ((-0.95, 0.28), (-1.70, -0.25), (-2.70, 0.20), (-2.05, 0.78)),
-        ((-0.95, 0.70), (-1.85, 0.55), (-2.55, 1.25), (-1.95, 1.70)),
-        ((-0.72, 1.15), (-1.55, 1.70), (-2.45, 2.85), (-2.55, 3.35)),
-        ((-0.32, 1.40), (-0.45, 2.25), (-0.35, 3.25), (-1.15, 3.70)),
-        ((0.32, 1.40), (0.45, 2.25), (0.35, 3.25), (1.15, 3.70)),
-        ((0.72, 1.15), (1.55, 1.70), (2.45, 2.85), (2.55, 3.35)),
-        ((0.95, 0.70), (1.85, 0.55), (2.55, 1.25), (1.95, 1.70)),
-        ((0.95, 0.28), (1.70, -0.25), (2.70, 0.20), (2.05, 0.78)),
+        ((-0.92, 0.12), (-1.50, -0.22), (-2.20, 0.10), (-1.68, 0.58)),
+        ((-0.96, 0.48), (-1.58, 0.40), (-2.10, 0.95), (-1.58, 1.28)),
+        ((-0.78, 0.82), (-1.35, 1.20), (-2.00, 2.05), (-2.05, 2.48)),
+        ((-0.35, 1.02), (-0.45, 1.65), (-0.32, 2.35), (-0.92, 2.70)),
+        ((0.35, 1.02), (0.45, 1.65), (0.32, 2.35), (0.92, 2.70)),
+        ((0.78, 0.82), (1.35, 1.20), (2.00, 2.05), (2.05, 2.48)),
+        ((0.96, 0.48), (1.58, 0.40), (2.10, 0.95), (1.58, 1.28)),
+        ((0.92, 0.12), (1.50, -0.22), (2.20, 0.10), (1.68, 0.58)),
     ]
     # Поза «указывает вверх на слайды» для правого (или левого) mid-hook.
     point_idx = 6 if point_side >= 0 else 1
     if point_side >= 0:
-        point_pose = ((0.95, 0.50), (1.15, -0.15), (1.05, -1.15), (0.85, -1.85))
+        point_pose = ((0.92, 0.35), (1.10, -0.15), (1.00, -0.95), (0.78, -1.55))
     else:
-        point_pose = ((-0.95, 0.50), (-1.15, -0.15), (-1.05, -1.15), (-0.85, -1.85))
+        point_pose = ((-0.92, 0.35), (-1.10, -0.15), (-1.00, -0.95), (-0.78, -1.55))
 
     out = []
     for i, (a, b, c, e) in enumerate(specs):
         ph = phase + i * 0.73
-        sx = 0.08 * math.sin(ph)
-        sy = 0.06 * math.sin(ph * 0.85 + 1.1)
+        sx = 0.07 * math.sin(ph)
+        sy = 0.05 * math.sin(ph * 0.85 + 1.1)
         b = (b[0] + sx * 0.35, b[1] + sy * 0.25)
         c = (c[0] + sx * 0.80, c[1] + sy * 0.65)
         e = (e[0] + sx, e[1] + sy)
@@ -109,8 +133,8 @@ def _tentacle_specs(phase=0.0, point=0.0, point_side=1):
             e = (e[0] + (pe[0] - e[0]) * k, e[1] + (pe[1] - e[1]) * k)
         elif point > 0 and i == (7 if point_side >= 0 else 0):
             # соседнее верхнее щупальце чуть поднимается вместе с жестом
-            e = (e[0] * (1 - 0.12 * point), e[1] - 0.55 * point)
-            c = (c[0], c[1] - 0.30 * point)
+            e = (e[0] * (1 - 0.12 * point), e[1] - 0.45 * point)
+            c = (c[0], c[1] - 0.25 * point)
         out.append((a, b, c, e))
     return out
 
@@ -119,11 +143,12 @@ def draw_octopus(size=SPRITE_SIZE, mouth=0.0, blink=0.0, phase=0.0, point=0.0, p
     """Спрайт осьминога. mouth, blink, point — от 0 до 1."""
     img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
+    # Широкая круглая голова-купол, как на логотипе (не вытянутое яйцо).
     cx, cy = size * 0.50, size * 0.36
-    rx = size * 0.168
-    ry = rx * 1.48
-    outline = max(6, int(rx * 0.28))
-    tent_outer = max(10, int(rx * 0.78))
+    rx = size * 0.225
+    ry = rx * 1.12
+    outline = max(6, int(rx * 0.22))
+    tent_outer = max(10, int(rx * 0.62))
     tent_inner = max(6, tent_outer - outline)
 
     specs = _tentacle_specs(phase, point, point_side)
@@ -143,41 +168,42 @@ def draw_octopus(size=SPRITE_SIZE, mouth=0.0, blink=0.0, phase=0.0, point=0.0, p
     )
     draw.ellipse([cx - rx, cy - ry, cx + rx, cy + ry], fill=ORANGE)
 
-    eye_rx, eye_ry = rx * 0.27, rx * 0.32
-    eye_y = cy + ry * 0.30
-    gap = rx * 0.46
-    pupil_r = rx * 0.125
+    # Глаза в нижней части широкой головы, как на логотипе.
+    eye_rx, eye_ry = rx * 0.195, rx * 0.215
+    eye_y = cy + ry * 0.36
+    gap = rx * 0.40
+    pupil_r = rx * 0.09
     for sign in (-1, 1):
         ex, ey = cx + sign * gap, eye_y
         if blink >= 0.85:
             w = eye_rx * 1.05
-            draw.line([(ex - w, ey), (ex + w, ey)], fill=BLACK, width=max(4, int(rx * 0.10)))
+            draw.line([(ex - w, ey), (ex + w, ey)], fill=BLACK, width=max(4, int(rx * 0.08)))
         else:
             ryy = eye_ry * (1.0 - 0.88 * blink)
             draw.ellipse([ex - eye_rx, ey - ryy, ex + eye_rx, ey + ryy], fill=WHITE)
             if blink < 0.55:
                 pr = pupil_r * (1.0 - 0.25 * blink)
-                px = ex - sign * rx * 0.03
-                py = ey - rx * 0.05  # смотрит немного вверх, на слайды
+                px = ex - sign * rx * 0.025
+                py = ey - rx * 0.04  # смотрит немного вверх, на слайды
                 draw.ellipse([px - pr, py - pr, px + pr, py + pr], fill=BLACK)
 
-    mx, my = cx, cy + ry * 0.70
+    mx, my = cx, cy + ry * 0.72
     if mouth < 0.10:
-        w = rx * 0.26
+        w = rx * 0.22
         pts = []
         for i in range(15):
             t = i / 14
             pts.append((
                 int(round(mx - w + 2 * w * t)),
-                int(round(my + rx * 0.07 * math.sin(math.pi * t))),
+                int(round(my + rx * 0.055 * math.sin(math.pi * t))),
             ))
-        draw.line(pts, fill=BLACK, width=max(5, int(rx * 0.11)), joint="curve")
-        r = max(2, int(rx * 0.055))
+        draw.line(pts, fill=BLACK, width=max(5, int(rx * 0.09)), joint="curve")
+        r = max(2, int(rx * 0.045))
         for p in (pts[0], pts[-1]):
             draw.ellipse([p[0] - r, p[1] - r, p[0] + r, p[1] + r], fill=BLACK)
     else:
-        mw = rx * (0.18 + 0.28 * mouth)
-        mh = rx * (0.08 + 0.32 * mouth)
+        mw = rx * (0.16 + 0.24 * mouth)
+        mh = rx * (0.07 + 0.26 * mouth)
         draw.ellipse([mx - mw, my - mh, mx + mw, my + mh], fill=BLACK)
         if mouth > 0.22:
             inset = max(3, rx * 0.045)
@@ -350,11 +376,12 @@ def tts_dmitry(text: str, mp3: Path, attempts_per_rate: int = 1):
 
 def tts_piper_male(text: str, mp3: Path):
     """Запасной мужской русский голос (Piper dmitri / ruslan / denis). Без женских."""
-    model = next((p for p in PIPER_MALE_MODELS if p.exists()), None)
+    model = next((p for p in _piper_male_models() if p.exists()), None)
     if model is None:
         raise RuntimeError(
-            "Нет мужского голоса: edge-tts Dmitry не ответил и модели Piper не найдены "
-            f"({PIPER_DMITRI})"
+            "Нет мужского голоса: edge-tts Dmitry не ответил и модели Piper не найдены. "
+            "Ожидается мужская ru_RU-dmitri-medium в $PIPER_MODEL / $PIPER_DIR "
+            "или ~/.local/share/piper/"
         )
     wav = mp3.with_suffix(".wav")
     proc = subprocess.run(

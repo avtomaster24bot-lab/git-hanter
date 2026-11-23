@@ -38,7 +38,7 @@ jobs:
   digest:
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     env:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -52,6 +52,24 @@ jobs:
       - name: Установить ffmpeg
         run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null
       - run: pip install -r requirements.txt
+      - name: Кэш мужского голоса Piper
+        id: piper-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/piper
+          key: piper-ru_RU-dmitri-medium-v1
+      - name: Скачать мужской голос Piper (dmitri)
+        if: steps.piper-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p "$HOME/.local/share/piper"
+          base="https://huggingface.co/rhasspy/piper-voices/resolve/main/ru/ru_RU/dmitri/medium"
+          curl -fL --retry 5 --retry-delay 3 \
+            -o "$HOME/.local/share/piper/ru_RU-dmitri-medium.onnx" \
+            "$base/ru_RU-dmitri-medium.onnx"
+          curl -fL --retry 5 --retry-delay 3 \
+            -o "$HOME/.local/share/piper/ru_RU-dmitri-medium.onnx.json" \
+            "$base/ru_RU-dmitri-medium.onnx.json"
+          ls -lh "$HOME/.local/share/piper"
       - name: Собрать подборку
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -63,6 +81,8 @@ jobs:
       - name: Собрать видео (Shorts / Reels / TikTok)
         env:
           VIDEO_FORCE: ${{ (inputs.force || inputs.force_video) && '1' || '0' }}
+          PIPER_DIR: /home/runner/.local/share/piper
+          PIPER_MODEL: /home/runner/.local/share/piper/ru_RU-dmitri-medium.onnx
         run: python scripts/make_videos.py
       - name: Сохранить в репозиторий
         run: |
