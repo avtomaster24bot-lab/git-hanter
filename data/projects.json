@@ -49,8 +49,8 @@
    "ai": "pollinations"
   },
   "video": "video/2026-11-23-routinemiku-apkstart.mp4",
-  "video_duration": 47.4,
-  "video_mb": 3.2,
+  "video_duration": 51.8,
+  "video_mb": 5.2,
   "video_synced_subs": true,
   "post": {
    "youtube_title": "apkstart: Запускай Android‑приложения как Windows‑программы #shorts",
@@ -120,8 +120,8 @@
    "ai": "pollinations"
   },
   "video": "video/2026-11-23-ersinkoc-phonebox.mp4",
-  "video_duration": 44.5,
-  "video_mb": 3.1,
+  "video_duration": 51.1,
+  "video_mb": 5.1,
   "video_synced_subs": true,
   "post": {
    "youtube_title": "phonebox: Старый Android‑телефон – современный пульт управления компьютером #shorts",
@@ -189,8 +189,8 @@
    "fallback": true
   },
   "video": "video/2026-11-23-l0ng-ai-openidea.mp4",
-  "video_duration": 34.1,
-  "video_mb": 2.4,
+  "video_duration": 36.7,
+  "video_mb": 3.7,
   "video_synced_subs": true,
   "post": {
    "youtube_title": "openidea: The IDE you know, rebuilt in Rust. IntelliJ IDEA–style keymap, tool windows… #shorts",
@@ -260,9 +260,9 @@
    "ai": "pollinations"
   },
   "video": "video/2026-11-23-erkamyaman-safe-anything.mp4",
-  "video_duration": 40.7,
-  "video_mb": 2.9,
-  "video_synced_subs": true,
+  "video_duration": 37.1,
+  "video_mb": 4.2,
+  "video_synced_subs": false,
   "post": {
    "youtube_title": "safe-anything: Сканер уязвимостей на Rust, который быстро находит XSS, SQL‑инъекции… #shorts",
    "youtube_description": "Сканер уязвимостей на Rust, который быстро находит XSS, SQL‑инъекции, утечки секретов и уязвимости зависимостей.\n\nЧто это: Safe‑Anything – это инструмент, написанный на Rust, который в один проход проверяет ваш код и конфигурацию на наличие различных уязвимостей. Он поддерживает 72 правила, охватывающие как код, так и секреты, настройки инфраструктуры и зависимости.\n\nЗачем: Он нужен, чтобы обнаружить уязвимости до того, как они попадут в продакшн, и не дать злоумышленнику воспользоваться ими. Поскольку сканирование происходит локально, никаких данных не отправляется в облако, а результаты сразу видны в CI/CD и в Pull Request’ах.\n\nЧто умеет:\n• Идентифицирует XSS, SQL‑инъекции и другие уязвимости в коде\n• Проверяет наличие утечек секретов и неправильных ключей\n• Сканирует конфигурацию Docker, GitHub Actions, Terraform и прочие инфраструктурные файлы\n• Анализирует зависимости на наличие CVE через OSV.dev\n• Поддерживает вывод в формате SARIF для GitHub Code Scanning\n\nКак начать: Установите через Cargo: `cargo install safe-anything` и запустите сканирование в корне проекта командой `safe-anything .`. Для вывода в формате SARIF используйте `--sarif`.\n\n🔗 Проект на GitHub: https://github.com/erkamyaman/safe-anything\n🔎 Ежедневная подборка Git Hunter: https://avtomaster24bot-lab.github.io/git-hunter/#/p/erkamyaman/safe-anything\n\n⭐ 285 · Rust\n\n🤖 Закажите личного ИИ-ассистента или сайт: https://avtomaster24bot-lab.github.io/git-hunter-studio/\n\n#GitHunter #github #opensource #программирование #полезное #безопасность #rust #shorts",
@@ -330,8 +330,8 @@
    "ai": "pollinations"
   },
   "video": "video/2026-11-23-vercel-labs-ui.mp4",
-  "video_duration": 33.8,
-  "video_mb": 2.6,
+  "video_duration": 37.3,
+  "video_mb": 4.0,
   "video_synced_subs": true,
   "post": {
    "youtube_title": "ui: Библиотека поведения для создания UI с помощью агентов #shorts",
@@ -400,9 +400,9 @@
    "ai": "pollinations"
   },
   "video": "video/2026-11-23-expo-exact.mp4",
-  "video_duration": 44.3,
-  "video_mb": 3.1,
-  "video_synced_subs": true,
+  "video_duration": 38.9,
+  "video_mb": 4.3,
+  "video_synced_subs": false,
   "post": {
    "youtube_title": "exact: Создавай приложения один раз – они работают на всех платформах, от веба до… #shorts",
    "youtube_description": "Создавай приложения один раз – они работают на всех платформах, от веба до macOS и Linux.\n\nЧто это: Exact – это фреймворк на Rust, который позволяет писать приложение один раз, а оно будет нативно работать в браузере, на iOS, macOS, Android, Linux и даже в терминале. Он не просто кроссплатформен, а реализует каждый интерфейс по‑своему, используя реальные DOM, UIKit, AppKit и т.д.\n\nЗачем: Многие инструменты «переносят» UI, теряя возможности платформы. Exact решает эту проблему, предоставляя единый исходный код, который компилируется в нативные компоненты каждой ОС, сохраняя скорость, отзывчивость и полный контроль над интерфейсом. Это ускоряет разработку и упрощает тестирование, особенно с AI‑агентами.\n\nЧто умеет:\n• Нативный рендеринг на каждой платформе (DOM, UIKit, AppKit, Android Canvas)\n• Детерминированный AI‑loop, позволяющий агентам строить, запускать и тестировать приложение без ручного вмешательства\n• Скорость: холодный старт и обновление за 100 мс\n• Поддержка веба, iOS, macOS, Linux, Android, Windows и даже терминала\n• Компилируется в Rust, без лишних JavaScript‑библиотек\n\nКак начать: Клонируй репозиторий и запусти `bun exact.mjs verify` для сборки и проверки. Для запуска на конкретной платформе используй `bun exact.mjs run ios` или `bun exact.mjs run web`.\n\n🔗 Проект на GitHub: https://github.com/expo/exact\n🔎 Ежедневная подборка Git Hunter: https://avtomaster24bot-lab.github.io/git-hunter/#/p/expo/exact\n\n⭐ 4939 · Rust\n\n🤖 Закажите личного ИИ-ассистента или сайт: https://avtomaster24bot-lab.github.io/git-hunter-studio/\n\n#GitHunter #github #opensource #программирование #полезное #ИИ #нейросети #AI #rust #shorts",
@@ -474,9 +474,9 @@
    "ai": "pollinations"
   },
   "video": "video/2026-11-23-w01fb0ss-pibot.mp4",
-  "video_duration": 38.8,
-  "video_mb": 2.8,
-  "video_synced_subs": true,
+  "video_duration": 34.5,
+  "video_mb": 4.1,
+  "video_synced_subs": false,
   "post": {
    "youtube_title": "PiBot: Команда ИИ‑ботов, работающих локально на вашем компьютере #shorts",
    "youtube_description": "Команда ИИ‑ботов, работающих локально на вашем компьютере\n\nЧто это: Pi Bot – это настольное приложение, которое позволяет создавать несколько ИИ‑ботов и вести с ними диалоги, а также выполнять команды, редактировать файлы, пользоваться браузером и компьютером. Каждый бот имеет собственную роль, модель и набор навыков, а все действия выполняются на локальной машине.\n\nЗачем: Многие сервисы ИИ требуют отправки данных в облако, что вызывает опасения по поводу конфиденциальности. Pi Bot решает эту проблему, обрабатывая всё локально и предоставляя пользователю полный контроль над данными и доступом к внешним сервисам. Это удобно тем, кто ценит приватность и хочет использовать ИИ без сторонних серверов.\n\nЧто умеет:\n• Создание ботов с индивидуальными ролями и навыками\n• Групповые чаты с координацией задач и утверждением планов\n• Автоматическое выполнение команд и редактирование файлов в заданных папках\n• Сквозная проверка каждого опасного действия через систему разрешений\n• Планировщик задач и триггеры по папке или событию\n\nКак начать: Скачайте приложение с официального сайта, установите и запустите. Для сборки из исходников выполните: `git clone https://github.com/w01fb0ss/PiBot.git && cd PiBot && nvm use && pnpm install && pnpm dev`.\n\n🔗 Проект на GitHub: https://github.com/w01fb0ss/PiBot\n🔎 Ежедневная подборка Git Hunter: https://avtomaster24bot-lab.github.io/git-hunter/#/p/w01fb0ss/PiBot\n\n⭐ 468 · TypeScript\n\n🤖 Закажите личного ИИ-ассистента или сайт: https://avtomaster24bot-lab.github.io/git-hunter-studio/\n\n#GitHunter #github #opensource #программирование #полезное #автоматизация #typescript #shorts",
@@ -542,9 +542,9 @@
    "ai": "pollinations"
   },
   "video": "video/2026-11-23-czzzzzzj-mdldm-maitian.mp4",
-  "video_duration": 46.4,
-  "video_mb": 3.3,
-  "video_synced_subs": true,
+  "video_duration": 42.0,
+  "video_mb": 4.6,
+  "video_synced_subs": false,
   "post": {
    "youtube_title": "mdldm-maitian: Многоплатформенный авто‑публикационный центр для контент‑творцов #shorts",
    "youtube_description": "Многоплатформенный авто‑публикационный центр для контент‑творцов\n\nЧто это: Майтиан – это веб‑приложение и Chrome‑расширение, которые позволяют одной команде публиковать видео на B‑站, Douyin, Xiaohongshu, YouTube, X и другие площадки, а также собирать статистику и выводить её на дашборд.\n\nЗачем: Создатели контента тратят часы на подготовку разных описаний, заголовков и графики для каждой сети. Майтиан автоматизирует заполнение форм, планирует публикации и собирает данные о просмотрах, лайках и росте подписчиков, избавляя от рутинной работы и ошибок при ручном вводе.\n\nЧто умеет:\n• Автоматическое заполнение форм и подготовка публикаций в несколько сетей\n• Планировщик с тайм‑шедулом и напоминаниями для ручного подтверждения\n• Ежедневный сбор статистики и отображение на интерактивном дашборде\n• Интеграция с Feishu для карточек‑уведомлений\n• Поддержка нескольких аккаунтов и защита от дублирования публикаций\n\nКак начать: Установите через один из скриптов: `bash -c \"$(curl -fsSL https://raw.githubusercontent.com/CzzzzzzJ/mdldm-maitian/main/scripts/install.sh)\"` для macOS или `powershell -ExecutionPolicy Bypass -Command \"irm https://raw.githubusercontent.com/CzzzzzzJ/mdldm-maitian/main/scripts/install-windows.ps1 | iex\"` для Windows. После установки запустите веб‑интерфейс по адресу http://localhost:8787 и настройте учётные записи.\n\n🔗 Проект на GitHub: https://github.com/CzzzzzzJ/mdldm-maitian\n🔎 Ежедневная подборка Git Hunter: https://avtomaster24bot-lab.github.io/git-hunter/#/p/CzzzzzzJ/mdldm-maitian\n\n⭐ 1914 · JavaScript\n\n🤖 Закажите личного ИИ-ассистента или сайт: https://avtomaster24bot-lab.github.io/git-hunter-studio/\n\n#GitHunter #github #opensource #программирование #полезное #автоматизация #javascript #shorts",
@@ -610,9 +610,9 @@
    "ai": "pollinations"
   },
   "video": "video/2026-11-23-microsoft-tokeneconomizer.mp4",
-  "video_duration": 43.1,
-  "video_mb": 2.8,
-  "video_synced_subs": true,
+  "video_duration": 37.9,
+  "video_mb": 4.1,
+  "video_synced_subs": false,
   "post": {
    "youtube_title": "TokenEconomizer: Сэкономьте токены, не меняя агента #shorts",
    "youtube_description": "Сэкономьте токены, не меняя агента\n\nЧто это: TokenEconomizer – плагин для кода‑агентов, который учится на прошлых сессиях и экономит токены, не меняя сам агент. Он хранит факты, убирает неиспользуемые инструменты и останавливает зацикливание.\n\nЗачем: Код‑агенты тратят много токенов на повторяющиеся запросы и неэффективные инструменты. Плагин уменьшает расходы, сохраняя опыт работы в репозитории, и повышает вероятность успешного завершения задач.\n\nЧто умеет:\n• Запоминает часто повторяющиеся факты о репозитории\n• Автоматически исключает неиспользуемые инструменты\n• Отслеживает и прерывает зацикливание ошибок\n\nКак начать: Клонируйте репозиторий и добавьте плагин в агента: \n```sh\ngit clone https://github.com/microsoft/TokenEconomizer.git\nclaude plugin marketplace add \"$PWD/TokenEconomizer\"\nclaude plugin install tokeneconomizer@tokeneconomizer\n```\n\n🔗 Проект на GitHub: https://github.com/microsoft/TokenEconomizer\n🔎 Ежедневная подборка Git Hunter: https://avtomaster24bot-lab.github.io/git-hunter/#/p/microsoft/TokenEconomizer\n\n⭐ 7994 · Python\n\n🤖 Закажите личного ИИ-ассистента или сайт: https://avtomaster24bot-lab.github.io/git-hunter-studio/\n\n#GitHunter #github #opensource #программирование #полезное #ИИ #нейросети #AI #python #shorts",
