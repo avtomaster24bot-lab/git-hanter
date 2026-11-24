@@ -1,6 +1,21 @@
 {
  "days": [
   {
+   "date": "2026-11-24",
+   "count": 9,
+   "names": [
+    "rddmwmddr/android-ad-cleaner",
+    "LNPANDY/NX2Apple",
+    "pierridotite/mobile-agent-testers",
+    "modelflare-ai/AnyModelBot",
+    "designfuchen/word-atlas",
+    "INK-Q/agy-fast",
+    "R44VC0RP/dashsplat",
+    "govijr/terminal-mac",
+    "Arekejoker/qwen21-nsfw-pose-skill"
+   ]
+  },
+  {
    "date": "2026-11-23",
    "count": 9,
    "names": [
@@ -31,8 +46,8 @@
    ]
   }
  ],
- "total": 18,
- "updated": "2026-11-23T17:05+05:00",
+ "total": 27,
+ "updated": "2026-11-24T18:32+05:00",
  "categories": [
   {
    "id": "ai",
@@ -91,8 +106,8 @@
   }
  ],
  "last_stats": {
-  "ai": 8,
-  "fallback": 1,
+  "ai": 9,
+  "fallback": 0,
   "audio": 9
  }
 }
