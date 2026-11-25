@@ -1,6 +1,21 @@
 {
  "days": [
   {
+   "date": "2026-11-25",
+   "count": 9,
+   "names": [
+    "qianyiai/kurocat",
+    "jhaizhou-ops/S2Arm",
+    "Leonxlnx/earshot",
+    "shinyobjectz/raea",
+    "ybblab/Jiumi",
+    "xevrion/hatchzip",
+    "D3voz/openjutsu",
+    "alchaincyf/huashu-motion",
+    "n4ze3m/tiny-voca"
+   ]
+  },
+  {
    "date": "2026-11-24",
    "count": 9,
    "names": [
@@ -46,8 +61,8 @@
    ]
   }
  ],
- "total": 27,
- "updated": "2026-11-24T18:32+05:00",
+ "total": 36,
+ "updated": "2026-11-25T17:25+05:00",
  "categories": [
   {
    "id": "ai",
