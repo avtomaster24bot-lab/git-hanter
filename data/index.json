@@ -1,6 +1,21 @@
 {
  "days": [
   {
+   "date": "2026-11-26",
+   "count": 9,
+   "names": [
+    "ly05010419/MacNativeGames",
+    "RMvdesi/obsidian-prism",
+    "imxieyi/Kernarium",
+    "Verlintas/NOIR",
+    "SilverFeit/StikSound",
+    "RobustaStudio/semsec",
+    "JosssphZhou/poki",
+    "N1nEmAn/sapper-v2",
+    "atuizz/posewear"
+   ]
+  },
+  {
    "date": "2026-11-25",
    "count": 9,
    "names": [
@@ -61,8 +76,8 @@
    ]
   }
  ],
- "total": 36,
- "updated": "2026-11-25T17:25+05:00",
+ "total": 45,
+ "updated": "2026-11-26T17:09+05:00",
  "categories": [
   {
    "id": "ai",
