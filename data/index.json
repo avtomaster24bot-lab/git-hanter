@@ -1,6 +1,21 @@
 {
  "days": [
   {
+   "date": "2026-11-27",
+   "count": 9,
+   "names": [
+    "nexu-io/opengame",
+    "gary23w/f-ck_data_brokers",
+    "wquguru/cicada",
+    "DIYgod/pinky",
+    "reacher-z/Awesome-REA",
+    "indexable-inc/blaze",
+    "OpenMOSS/MOSS-Image",
+    "serveroshq/panel",
+    "opencoredev/islandcn"
+   ]
+  },
+  {
    "date": "2026-11-26",
    "count": 9,
    "names": [
@@ -76,8 +91,8 @@
    ]
   }
  ],
- "total": 45,
- "updated": "2026-11-26T17:09+05:00",
+ "total": 54,
+ "updated": "2026-11-27T17:02+05:00",
  "categories": [
   {
    "id": "ai",
