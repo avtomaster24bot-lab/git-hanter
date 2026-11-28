@@ -1,6 +1,21 @@
 {
  "days": [
   {
+   "date": "2026-11-28",
+   "count": 9,
+   "names": [
+    "DeadInternetStudios/100x-engineer-skill",
+    "linjiejim/ohmwork",
+    "zephyr4123/snug",
+    "Developing-Gamer/agent-sim",
+    "boringmarketer/boring-marketing-skills",
+    "Moh4696/cinematic-skill",
+    "humblemuzzu/dumbtv",
+    "rivet-dev/open-orange",
+    "replit/datacat"
+   ]
+  },
+  {
    "date": "2026-11-27",
    "count": 9,
    "names": [
@@ -91,8 +106,8 @@
    ]
   }
  ],
- "total": 54,
- "updated": "2026-11-27T17:02+05:00",
+ "total": 63,
+ "updated": "2026-11-28T16:38+05:00",
  "categories": [
   {
    "id": "ai",
